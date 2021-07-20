@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div class="map">
     <GmapMap
@@ -21,10 +22,7 @@
   </div>
 </template>
 
-/* eslint-disable */
-
 <script>
-
 export default {
   data () {
     return {
@@ -58,7 +56,6 @@ export default {
   }
 
 }
-
 </script>
 
 /* eslint-enable */
