@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app light>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -98,19 +98,27 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'マップ',
           to: '/'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          title: '受入店一覧',
+          to: '/index_host_details'
+        },
+        {
+          title: '受入店詳細',
+          to: '/host_detail'
+        },
+        {
+          title: '受入切替画面',
+          to: '/switching'
         }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: '遠野旅の産地直売所'
     }
   }
 }
