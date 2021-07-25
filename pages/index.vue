@@ -45,11 +45,20 @@ export default {
         {
           title: '遠野市役所',
           position: { lat: 39.33065351795713, lng: 141.5314473040145 },
-          animation: Animation.BOUNCE
+          animation: 1,
+          pinicon: {
+            url: '/img/kappa.png',
+            scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }
+          }
         },
         {
           title: '遠野旅の産地直売所',
-          position: { lat: 39.33159282407645, lng: 141.53075750707873 }
+          position: { lat: 39.33159282407645, lng: 141.53075750707873 },
+          animation: 1,
+          pinicon: {
+            url: '/img/kappa.png',
+            scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }
+          }
         }
       ]
     }
