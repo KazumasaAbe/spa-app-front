@@ -7,12 +7,12 @@
       style="width: 100%; height: 600px"
     >
       <GmapMarker
-        v-for="(m, index) in markers"
-        :key="index"
-        :title="m.title"
-        :position="m.position"
-        :animation="m.animation"
-        :icon="m.pinicon"
+        v-for="(m, i) in hostDetails"
+        :key="i"
+        :title="m.name"
+        :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
+        :animation="Number(m.acceptable)"
+        :icon="{url: '/img/kappa.png', scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }}"
         @click="onClickMarker(index, m)"
       />
     </GmapMap>
@@ -26,6 +26,7 @@
 export default {
   data () {
     return {
+      hostDetails: [],
       center: { lat: 39.3321782595909, lng: 141.53094514522962 },
       zoom: 17,
       infoWindowPos: null,
@@ -40,30 +41,15 @@ export default {
           width: 0,
           height: -35
         }
-      },
-      markers: [
-        {
-          title: '遠野市役所',
-          position: { lat: 39.33065351795713, lng: 141.5314473040145 },
-          animation: 1,
-          pinicon: {
-            url: '/img/kappa.png',
-            scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }
-          }
-        },
-        {
-          title: '遠野旅の産地直売所',
-          position: { lat: 39.33159282407645, lng: 141.53075750707873 },
-          animation: 1,
-          pinicon: {
-            url: '/img/kappa.png',
-            scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }
-          }
-        }
-      ]
+      }
     }
-  }
+  },
 
+  mounted () {
+    this.$axios
+      .get('/api/v1/host_details.json')
+      .then(response => (this.hostDetails = response.data))
+  }
 }
 </script>
 
