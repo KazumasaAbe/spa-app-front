@@ -5,45 +5,37 @@
     <h2>受入店作成</h2>
     <v-form ref="form">
       <v-text-field
-          v-model="host_detail.name"
-          label="店舗名"
-      >
-      </v-text-field>
+        v-model="host_detail.name"
+        label="店舗名"
+      />
       <v-text-field
-          v-model="host_detail.latitude"
-          label="緯度"
-      >
-      </v-text-field>
+        v-model="host_detail.latitude"
+        label="緯度"
+      />
       <v-text-field
-          v-model="host_detail.longitude"
-          label="経度"
-      >
-      </v-text-field>
+        v-model="host_detail.longitude"
+        label="経度"
+      />
       <v-text-field
-          v-model="host_detail.acceptable_date"
-          label="受入時間"
-      >
-      </v-text-field>
+        v-model="host_detail.acceptable_date"
+        label="受入時間"
+      />
       <v-text-field
-          v-model="host_detail.rate"
-          label="必要カッパ数"
-      >
-      </v-text-field>
+        v-model="host_detail.rate"
+        label="必要カッパ数"
+      />
       <v-text-field
-          v-model="host_detail.description"
-          label="説明"
-      >
-      </v-text-field>
+        v-model="host_detail.description"
+        label="説明"
+      />
       <v-text-field
-          v-model="host_detail.link"
-          label="リンク"
-      >
-      </v-text-field>
+        v-model="host_detail.link"
+        label="リンク"
+      />
       <v-text-field
-          v-model="host_detail.address"
-          label="住所"
-      >
-      </v-text-field>
+        v-model="host_detail.address"
+        label="住所"
+      />
       <v-btn
         depressed
         color="primary"
@@ -71,11 +63,6 @@ export default {
       }
     }
   },
-
-  mounted () {
-    this.fetchContents()
-  },
-
   computed: {
     params () {
       return {
@@ -93,6 +80,10 @@ export default {
     }
   },
 
+  mounted () {
+    this.fetchContents()
+  },
+
   methods: {
     fetchContents () {
       const url = '/api/v1/host_details'
@@ -107,6 +98,7 @@ export default {
       const url = '/api/v1/host_details'
       this.$axios.post(url, this.params)
         .then((res) => {
+          // eslint-disable-next-line no-console
           console.log(res)
           this.name = ''
           this.fetchContents()

@@ -1,31 +1,95 @@
 /* eslint-disable */
 <template>
-  <div class="map">
-    <GmapMap
-      :center="center"
-      :zoom="zoom"
-      style="width: 100%; height: 600px"
-    >
-      <GmapMarker
-        v-for="(m, i) in hostDetails"
-        :key="i"
-        :title="m.name"
-        :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
-        :animation="Number(m.acceptable)"
-        :icon="{url: '/img/kappa.png', scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }}"
-        @click="onClickMarker(index, m)"
-      />
-    </GmapMap>
-    <nuxt-link to="/search">
-      検索画面に戻る
-    </nuxt-link>
-  </div>
+  <v-app id="app" class="map">
+    <v-container>
+    <v-row>
+      <GmapMap
+        ref="gmp"
+        :center="center"
+        :zoom="zoom"
+        style="width: 100%; height: 600px"
+      >
+        <GmapMarker
+          v-for="(m, index) in hostDetails"
+          :key="index"
+          :title="m.name"
+          :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
+          :animation="Number(m.acceptable)"
+          :clickable="true"
+          :draggable="false"
+          :icon="{url: '/img/kappa.png', scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }}"
+          @click="onClickMarker(index, m)"
+        />
+        <GmapInfoWindow
+          :options="infoOptions"
+          :position="infoWindowPos"
+          :opened="infoWinOpen"
+          @closeclick="infoWinOpen = false"
+        >
+          <p style="color: #000">
+            {{ marker.name }}
+          </p>
+        </GmapInfoWindow>
+      </GmapMap>
+        <v-dialog
+          v-model="dialog"
+          max-width="800px"
+          height="800px"
+        >
+            <v-card>
+              <v-card-title>
+                <span>{{ marker.name }}</span>
+              </v-card-title>
+              <v-card-text aligin-center>
+                <v-col
+                  cols="12"
+                >
+                  <span v-if="marker.acceptable_date">{{ marker.acceptable_date }}</span>
+                  <span v-else>情報はありません</span>
+                </v-col>
+              </v-card-text>
+              <v-card-text>
+                <v-col
+                  cols="12"
+                >
+                  <span v-if="marker.rate">必要カッパ数：{{ marker.rate }} カッパ</span>
+                  <span v-else>必要カッパの情報はありません</span>
+                </v-col>
+              </v-card-text>
+               <v-card-text>
+                <v-col
+                  cols="12"
+                >
+                  <span v-if="marker.description">{{ marker.description }}</span>
+                  <span v-else>店舗情報はありません</span>
+                </v-col>
+              </v-card-text>
+              <v-card-text>
+                <v-col
+                  cols="12"
+                >
+                  <v-btn
+                    :href="marker.link"
+                    color="link"
+                    class="x-small post-link align-center py-1 px-2"
+                  >
+                  店舗詳細情報
+                  </v-btn>
+                </v-col>
+              </v-card-text>
+            </v-card>
+        </v-dialog>
+    </v-row>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
 export default {
   data () {
     return {
+      dialog: false,
+      marker: {},
       hostDetails: [],
       center: { lat: 39.3321782595909, lng: 141.53094514522962 },
       zoom: 17,
@@ -49,8 +113,23 @@ export default {
     this.$axios
       .get('/api/v1/host_details.json')
       .then(response => (this.hostDetails = response.data))
+  },
+  methods: {
+    onClickMarker (index, marker) {
+      this.$refs.gmp.panTo({ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) })
+      this.infoWindowPos = { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }
+      this.marker = marker
+      this.infoWinOpen = false
+      this.dialog = true
+    }
   }
 }
 </script>
+
+<style scoped>
+  .map {
+    margin-top:50px;
+  }
+</style>
 
 /* eslint-enable */
