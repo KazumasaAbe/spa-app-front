@@ -2,43 +2,52 @@
 <template>
   <v-app id="app" class="map">
     <v-container>
-    <v-row>
-      <GmapMap
-        ref="gmp"
-        :center="center"
-        :zoom="zoom"
-        style="width: 100%; height: 600px"
-      >
-        <GmapMarker
-          v-for="(m, index) in hostDetails"
-          :key="index"
-          :title="m.name"
-          :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
-          :animation="Number(m.acceptable)"
-          :clickable="true"
-          :draggable="false"
-          :icon="{url: '/img/kappa.png', scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }}"
-          @click="onClickMarker(index, m)"
-        />
-        <GmapInfoWindow
-          :options="infoOptions"
-          :position="infoWindowPos"
-          :opened="infoWinOpen"
-          @closeclick="infoWinOpen = false"
+      <v-row justify="center">
+        <v-col
+          cols="10"
         >
-          <p style="color: #000">
-            {{ marker.name }}
-          </p>
-        </GmapInfoWindow>
-      </GmapMap>
-        <v-dialog
-          v-model="dialog"
-          max-width="800px"
-          height="800px"
-        >
+          <GmapMap
+            ref="gmp"
+            :center="center"
+            :zoom="zoom"
+            style="width: 100%; height: 600px"
+          >
+            <GmapMarker
+              v-for="(m, index) in hostDetails"
+              :key="index"
+              :title="m.name"
+              :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
+              :animation="Number(m.acceptable)"
+              :clickable="true"
+              :draggable="false"
+              :icon="{url: '/img/kappa.png', scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }}"
+              @click="onClickMarker(index, m)"
+            />
+            <GmapInfoWindow
+              :options="infoOptions"
+              :position="infoWindowPos"
+              :opened="infoWinOpen"
+              @closeclick="infoWinOpen = false"
+            >
+              <p style="color: #000">
+                {{ marker.name }}
+              </p>
+            </GmapInfoWindow>
+          </GmapMap>
+          <v-dialog
+            v-model="dialog"
+            max-width="800px"
+          >
             <v-card>
               <v-card-title>
-                <span>{{ marker.name }}</span>
+                <span class="layout justify-center">{{ marker.name }}</span>
+                <v-icon
+                  large
+                  color="darken-2"
+                  @click="closeDialog"
+                >
+                  mdi-backspace-outline
+                </v-icon>
               </v-card-title>
               <v-card-text aligin-center>
                 <v-col
@@ -56,7 +65,7 @@
                   <span v-else>必要カッパの情報はありません</span>
                 </v-col>
               </v-card-text>
-               <v-card-text>
+              <v-card-text>
                 <v-col
                   cols="12"
                 >
@@ -70,16 +79,18 @@
                 >
                   <v-btn
                     :href="marker.link"
-                    color="link"
-                    class="x-small post-link align-center py-1 px-2"
+                    block
+                    color="primary"
+                    class="layout justify-center"
                   >
-                  店舗詳細情報
+                    店舗詳細情報
                   </v-btn>
                 </v-col>
               </v-card-text>
             </v-card>
-        </v-dialog>
-    </v-row>
+          </v-dialog>
+        </v-col>
+      </v-row>
     </v-container>
   </v-app>
 </template>
@@ -121,6 +132,9 @@ export default {
       this.marker = marker
       this.infoWinOpen = false
       this.dialog = true
+    },
+    closeDialog () {
+      this.dialog = false
     }
   }
 }
