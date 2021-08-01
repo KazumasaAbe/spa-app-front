@@ -16,6 +16,5 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    "quotes": "off"
   }
 }
