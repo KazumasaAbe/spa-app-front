@@ -5,8 +5,52 @@
     <h2>受入店作成</h2>
     <v-form ref="form">
       <v-text-field
-        v-model="host_detail.name"
+        v-model="params.host_detail.name"
         label="店舗名"
+      />
+      <v-text-field
+        v-model="params.host_detail.latitude"
+        label="緯度"
+      />
+      <v-text-field
+        v-model="params.host_detail.longitude"
+        label="経度"
+      />
+      <v-text-field
+        v-model="params.host_detail.rate"
+        label="必要カッパ数"
+      />
+      <v-text-field
+        v-model="params.host_detail.description"
+        label="説明"
+      />
+      <v-text-field
+        v-model="params.host_detail.link"
+        label="リンク"
+      />
+      <v-text-field
+        v-model="params.host_detail.address"
+        label="住所"
+      />
+      <v-file-input
+        v-model="params.host_detail.marker_icon"
+        label="マーカーアイコン"
+        accept="marker_icon/png, marker_icon/jpeg, marker_icon/bmp"
+        @change="setMarkerIcon"
+      />
+      <v-file-input
+        v-model="params.host_detail.image"
+        label="店舗写真"
+        accept="image/png, image/jpeg, image/bmp"
+        @change="setImage"
+      />
+      <v-text-field
+        v-model="params.host_detail.maximum_acceptability"
+        label="最大受入人数"
+      />
+      <v-text-field
+        v-model="params.host_detail.tags.tag"
+        label="タグ"
       />
       <v-text-field
         v-model="host_detail.latitude"
@@ -52,29 +96,43 @@ export default {
   data: () => {
     return {
       host_detail: {
-        name: "",
-        latitude: "",
-        longitude: "",
-        acceptable_date: "",
-        rate: "",
-        description: "",
-        link: "",
-        address: ""
+        name: '',
+        latitude: '',
+        longitude: '',
+        rate: '',
+        description: '',
+        link: '',
+        address: '',
+        marker_icon: '',
+        image: '',
+        maximum_acceptability: '',
+        tags_attributes: [
+          {
+            tag: ''
+          }
+        ]
       }
     }
   },
   computed: {
     params () {
       return {
-        hostDetail: {
+        host_detail: {
           name: this.name,
           latitude: this.latitude,
           longitude: this.longitude,
-          acceptable_date: this.acceptable_date,
           rate: this.rate,
           description: this.description,
           link: this.link,
-          address: this.address
+          address: this.address,
+          marker_icon: this.marker_icon,
+          image: this.image,
+          maximum_acceptability: this.maximum_acceptability,
+          tags_attributes: [
+            {
+              tag: this.tag
+            }
+          ]
         }
       }
     }
@@ -85,34 +143,22 @@ export default {
   },
 
   methods: {
-    fetchContents () {
-      const url = '/api/v1/host_details'
-      this.$axios.get(url)
-        .then((res) => {
-          this.hostDetail = res.data.hostDetail
-        })
+    setImage (e) {
+      this.image = e
     },
-
+    setMarkerIcon (e) {
+      this.marker_icon = e
+    },
     save () {
-      // 保存処理
       const url = '/api/v1/host_details'
       this.$axios.post(url, this.params)
         .then((res) => {
           // eslint-disable-next-line no-console
           console.log(res)
-          this.name = ''
-          this.fetchContents()
-          this.$bvToast.toast(res.data, {
-            title: '成功',
-            variant: 'success'
-          })
         })
         .catch((err) => {
           const message = err.response.data
-          this.$bvToast.toast(message, {
-            title: 'エラー',
-            variant: 'danger'
-          })
+          console.log(message)
         })
     }
   }
