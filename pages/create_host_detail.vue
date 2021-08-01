@@ -51,8 +51,6 @@
       <v-text-field
         v-model="params.host_detail.tags.tag"
         label="タグ"
-        v-model="host_detail.name"
-        label="店舗名"
       />
       <v-text-field
         v-model="host_detail.latitude"
