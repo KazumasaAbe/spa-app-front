@@ -75,6 +75,10 @@ export default {
         {
           title: '受入切替画面',
           to: '/switching'
+        },
+        {
+          title: 'ログイン',
+          to: '/login'
         }
       ],
       miniVariant: false,
