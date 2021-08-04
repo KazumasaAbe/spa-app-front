@@ -10,10 +10,7 @@
           <th>受入店名</th>
           <th>緯度</th>
           <th>経度</th>
-          <th>受入可能日時</th>
-          <th>必要通貨数</th>
-          <th>住所</th>
-          <th>受入可否切替</th>
+          <th>画像</th>
         </tr>
       </thead>
       <tbody>
@@ -24,10 +21,7 @@
           <td>{{ hostDetail.name }}</td>
           <td>{{ hostDetail.latitude }}</td>
           <td>{{ hostDetail.longitude }}</td>
-          <td>{{ hostDetail.acceptable_date }}</td>
-          <td>{{ hostDetail.rate }}</td>
-          <td>{{ hostDetail.address }}</td>
-          <td>{{ hostDetail.acceptable }}</td>
+          <td><img :src="hostDetail.image"></td>
         </tr>
       </tbody>
     </table>
@@ -45,16 +39,6 @@ export default {
     await $axios.$get('/api/v1/host_details')
       .then(res => (hostDetails = res))
     return { hostDetails }
-  },
-  computed: {
-    dateFormat () {
-      return (date) => {
-        const dateTimeFormat = new Intl.DateTimeFormat(
-          'ja', { dateStyle: 'medium', timeStyle: 'short' }
-        )
-        return dateTimeFormat.format(new Date(date))
-      }
-    }
   }
 }
 </script>

@@ -32,25 +32,17 @@
         v-model="params.host_detail.address"
         label="住所"
       />
-      <v-file-input
-        v-model="params.host_detail.marker_icon"
-        label="マーカーアイコン"
-        accept="marker_icon/png, marker_icon/jpeg, marker_icon/bmp"
-        @change="setMarkerIcon"
-      />
-      <v-file-input
-        v-model="params.host_detail.image"
-        label="店舗写真"
-        accept="image/png, image/jpeg, image/bmp"
-        @change="setImage"
-      />
       <v-text-field
         v-model="params.host_detail.maximum_acceptability"
         label="最大受入人数"
       />
       <v-text-field
-        v-model="params.host_detail.tags.tag"
-        label="タグ"
+        v-model="params.host_detail.marker_icon"
+        label="マーカーアイコンURL"
+      />
+      <v-text-field
+        v-model="params.host_detail.image"
+        label="店舗写真URL"
       />
       <v-btn
         depressed
@@ -75,9 +67,9 @@ export default {
         description: '',
         link: '',
         address: '',
+        maximum_acceptability: '',
         marker_icon: '',
         image: '',
-        maximum_acceptability: '',
         tags_attributes: [
           {
             tag: ''
@@ -98,9 +90,9 @@ export default {
           description: this.description,
           link: this.link,
           address: this.address,
+          maximum_acceptability: this.maximum_acceptability,
           marker_icon: this.marker_icon,
           image: this.image,
-          maximum_acceptability: this.maximum_acceptability,
           tags_attributes: [
             {
               tag: this.tag
@@ -112,12 +104,6 @@ export default {
   },
 
   methods: {
-    setImage (e) {
-      this.image = e
-    },
-    setMarkerIcon (e) {
-      this.marker_icon = e
-    },
     save () {
       const url = '/api/v1/host_details'
       this.$axios.post(url, this.params)
