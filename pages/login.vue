@@ -11,9 +11,9 @@
             <v-card-text>
               <v-form>
                 <v-text-field
-                  v-model="name"
+                  v-model="email"
                   prepend-icon="mdi-account-circle"
-                  label="会員様ID(またはメールアドレス)"
+                  label="メールアドレス"
                 />
                 <v-text-field
                   v-model="password"
@@ -28,6 +28,7 @@
                 <v-btn
                   color="info"
                   block
+                  @click="loginWithAuthModule"
                 >
                   ログイン
                 </v-btn>
@@ -69,8 +70,34 @@ export default {
     return {
       message: '新規登録です',
       showPassword: false,
-      name: '',
+      email: '',
       password: ''
+    }
+  },
+  methods: {
+    // loginメソッドの呼び出し
+    async loginWithAuthModule () {
+      await this.$auth
+        .loginWith('local', {
+          // emailとpasswordの情報を送信
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(
+          (response) => {
+          // レスポンスで返ってきた、認証に必要な情報をlocalStorageに保存
+            localStorage.setItem('access-token', response.headers['access-token'])
+            localStorage.setItem('client', response.headers.client)
+            localStorage.setItem('uid', response.headers.uid)
+            localStorage.setItem('token-type', response.headers['token-type'])
+            return response
+          },
+          (error) => {
+            return error
+          }
+        )
     }
   }
 }

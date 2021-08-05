@@ -90,5 +90,22 @@ export default {
     },
     vendor: ['vue2-google-maps'],
     transpile: [/^vue2-google-maps($|\/)/]
+  },
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: false,
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/api/v1/auth/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/api/v1/auth/logout', method: 'post' },
+          user: false
+        }
+      }
+    }
   }
 }

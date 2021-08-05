@@ -11,9 +11,9 @@
             <v-card-text>
               <v-form>
                 <v-text-field
-                  v-model="name"
+                  v-model="email"
                   prepend-icon="mdi-account-circle"
-                  label="会員様ID(またはメールアドレス)"
+                  label="メールアドレス"
                 />
                 <v-text-field
                   v-model="password"
@@ -36,6 +36,7 @@
                 <v-btn
                   color="info"
                   block
+                  @click="registerUser"
                 >
                   新規登録
                 </v-btn>
@@ -54,9 +55,16 @@ export default {
   data () {
     return {
       showPassword: false,
-      name: '',
+      email: '',
       password: '',
       password_confirmation: ''
+    }
+  },
+  methods: {
+    registerUser () {
+      this.$axios.post('/api/v1/auth', this.user).then((response) => {
+        window.location.href = '/'
+      })
     }
   }
 }

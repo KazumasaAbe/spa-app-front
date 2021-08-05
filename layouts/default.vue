@@ -32,6 +32,16 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-layout justify-center>
+        <v-btn
+          class="text-capitalize
+                    white--text"
+          color="deep-orange"
+          @click="$auth.logout()"
+        >
+          ログアウト
+        </v-btn>
+      </v-layout>
     </v-app-bar>
     <v-main>
       <v-container>
