@@ -73,16 +73,8 @@ export default {
           to: '/'
         },
         {
-          title: '受入店作成',
-          to: '/create_host_detail'
-        },
-        {
           title: '受入店一覧',
           to: '/index_host_details'
-        },
-        {
-          title: '受入店詳細',
-          to: '/host_detail'
         },
         {
           title: '受入切替画面',
