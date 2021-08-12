@@ -29,7 +29,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '@/plugins/plugin', mode: 'client' },
-    { src: '~/plugins/vue2-google-maps.js', ssr: false }
+    { src: '~/plugins/vue2-google-maps.js', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -46,7 +46,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -90,5 +91,22 @@ export default {
     },
     vendor: ['vue2-google-maps'],
     transpile: [/^vue2-google-maps($|\/)/]
+  },
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: false,
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/api/v1/auth/sign_in', method: 'post', propertyName: 'token' },
+          logout: { url: '/api/v1/auth/sign_out', method: 'delete' },
+          user: false
+        }
+      }
+    }
   }
 }

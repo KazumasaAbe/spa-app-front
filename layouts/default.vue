@@ -32,6 +32,18 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-layout justify-center>
+        <span v-if="$auth.loggedIn">
+          <v-btn
+            class="text-capitalize
+                      white--text"
+            color="deep-orange"
+            @click="$auth.logout()"
+          >
+            ログアウト
+          </v-btn>
+        </span>
+      </v-layout>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -75,6 +87,10 @@ export default {
         {
           title: '受入切替画面',
           to: '/switching'
+        },
+        {
+          title: 'ログイン',
+          to: '/login'
         }
       ],
       miniVariant: false,
