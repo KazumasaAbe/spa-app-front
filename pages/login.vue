@@ -48,6 +48,7 @@
                           white--text"
                   color="deep-orange"
                   block
+                  @click.stop="authenticate"
                 >
                   <v-icon>mdi-google</v-icon>
                   <v-spacer />
@@ -65,6 +66,7 @@
 
 <script>
 export default {
+  auth: false,
   name: 'SignUp',
   data () {
     return {
@@ -92,14 +94,27 @@ export default {
             localStorage.setItem('client', response.headers.client)
             localStorage.setItem('uid', response.headers.uid)
             localStorage.setItem('token-type', response.headers['token-type'])
-            console.log(response.headers['access-token'])
-            console.log(response.headers)
+            this.$router.push('/')
+            this.$store.dispatch(
+              'flashMessage/showMessage',
+              {
+                message: 'ログインしました.',
+                type: 'success',
+                status: true
+              },
+              { root: true }
+            )
+            // console.log(localStorage.getItem('access-token'))
             return response
           },
           (error) => {
             return error
           }
         )
+    },
+    authenticate () {
+      console.log('1')
+      this.$auth.loginWith('app')
     }
   }
 }

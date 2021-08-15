@@ -1,4 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -29,7 +28,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '@/plugins/plugin', mode: 'client' },
-    { src: '~/plugins/vue2-google-maps.js', ssr: false },
+    { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -91,16 +90,35 @@ export default {
     redirect: {
       login: '/login',
       logout: '/',
-      callback: false,
+      callback: '/oauth2_callback',
       home: '/'
     },
     strategies: {
       local: {
         endpoints: {
           login: { url: '/api/v1/auth/sign_in', method: 'post', propertyName: 'token' },
-          logout: { url: '/api/v1/auth/sign_out', method: 'delete' },
+          logout: false,
+          callback: false,
           user: false
         }
+      },
+      app: {
+        _scheme: 'oauth2',
+        authorization_endpoint: 'https://accounts.google.com/o/oauth2/auth',
+        userinfo_endpoint: 'https://www.googleapis.com/oauth2/v3/userinfo',
+        scope: [
+          'email',
+          'profile',
+          'openid',
+          'https://www.googleapis.com/auth/drive.metadata.readonly'
+        ],
+        access_type: undefined,
+        access_token_endpoint: undefined,
+        response_type: 'token',
+        token_type: 'Bearer',
+        client_id: '560925972258-00rsdnku4ogb41uh18ggj1ir18ggibpe.apps.googleusercontent.com',
+        client_secret: '3PALX6nf4vJ6Ux1ljUKyeRTc',
+        token_key: 'access_token'
       }
     }
   }

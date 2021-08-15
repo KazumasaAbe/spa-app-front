@@ -5,40 +5,33 @@
     <h2>受入店作成</h2>
     <v-form ref="form">
       <v-text-field
-          v-model="params.host_detail.name"
-          label="店舗名"
-      >
-      </v-text-field>
+        v-model="params.host_detail.name"
+        label="店舗名"
+      />
       <v-text-field
-          v-model="params.host_detail.latitude"
-          label="緯度"
-      >
-      </v-text-field>
+        v-model="params.host_detail.latitude"
+        label="緯度"
+      />
       <v-text-field
-          v-model="params.host_detail.longitude"
-          label="経度"
-      >
-      </v-text-field>
+        v-model="params.host_detail.longitude"
+        label="経度"
+      />
       <v-text-field
-          v-model="params.host_detail.rate"
-          label="必要カッパ数"
-      >
-      </v-text-field>
+        v-model="params.host_detail.rate"
+        label="必要カッパ数"
+      />
       <v-text-field
-          v-model="params.host_detail.description"
-          label="説明"
-      >
-      </v-text-field>
+        v-model="params.host_detail.description"
+        label="説明"
+      />
       <v-text-field
-          v-model="params.host_detail.link"
-          label="リンク"
-      >
-      </v-text-field>
+        v-model="params.host_detail.link"
+        label="リンク"
+      />
       <v-text-field
-          v-model="params.host_detail.address"
-          label="住所"
-      >
-      </v-text-field>
+        v-model="params.host_detail.address"
+        label="住所"
+      />
       <v-file-input
         v-model="params.host_detail.marker_icon"
         label="マーカーアイコン"
@@ -50,10 +43,9 @@
         accept="image/png, image/jpeg, image/bmp"
       />
       <v-text-field
-          v-model="params.host_detail.maximum_acceptability"
-          label="最大受入人数"
-      >
-      </v-text-field>
+        v-model="params.host_detail.maximum_acceptability"
+        label="最大受入人数"
+      />
       <v-btn
         depressed
         color="primary"
@@ -70,18 +62,18 @@ export default {
   data: () => {
     return {
       host_detail: {
-        name: "",
-        latitude: "",
-        longitude: "",
-        rate: "",
-        description: "",
-        link: "",
-        address: "",
-        marker_icon: "",
-        image: "",
-        maximum_acceptability: "",
+        name: '',
+        latitude: '',
+        longitude: '',
+        rate: '',
+        description: '',
+        link: '',
+        address: '',
+        marker_icon: '',
+        image: '',
+        maximum_acceptability: '',
         tags_attributes: [{
-          tag: ""
+          tag: ''
         }]
       }
     }
@@ -131,6 +123,7 @@ export default {
         })
         .catch((err) => {
           const message = err.response.data
+          // eslint-disable-next-line no-console
           console.log(message)
         })
     }

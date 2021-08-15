@@ -64,8 +64,29 @@ export default {
   },
   methods: {
     registerUser () {
-      console.log(this.user)
-      this.$axios.post('/api/v1/auth', this.user)
+      this.$axios.post('/api/v1/auth', this.user).then((response) => {
+        this.loginWithAuthModule()
+        this.$router.push('/')
+        this.$store.dispatch(
+          'flashMessage/showMessage',
+          {
+            message: '新規登録しました',
+            type: 'success',
+            status: true
+          },
+          { root: true }
+        )
+      })
+    },
+    loginWithAuthModule () {
+      this.$auth
+        .loginWith('local', {
+          // emailとpasswordの情報を送信
+          data: {
+            email: this.user.email,
+            password: this.user.password
+          }
+        })
         .then(
           (response) => {
           // レスポンスで返ってきた、認証に必要な情報をlocalStorageに保存
@@ -73,8 +94,6 @@ export default {
             localStorage.setItem('client', response.headers.client)
             localStorage.setItem('uid', response.headers.uid)
             localStorage.setItem('token-type', response.headers['token-type'])
-            console.log(response.headers['access-token'])
-            console.log(response.headers)
             return response
           },
           (error) => {

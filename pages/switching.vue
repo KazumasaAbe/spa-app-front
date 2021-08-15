@@ -22,9 +22,9 @@
                 <v-icon>mdi-map-marker-radius</v-icon>
               </v-btn>
             </div>
-            </div>
-            <v-text>受入不可</v-text>
-            <div class="text-center">
+          </div>
+          <v-text>受入不可</v-text>
+          <div class="text-center">
             <div class="my-2">
               <v-btn
                 color="error"
