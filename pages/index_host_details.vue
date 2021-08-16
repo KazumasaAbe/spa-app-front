@@ -147,6 +147,7 @@ export default {
 
   data: () => ({
     dialog: false,
+    flashMessage: false,
     headers: [
       {
         text: 'ID',
@@ -215,17 +216,19 @@ export default {
 
     deleteItem (item) {
       const index = this.hostDetails.indexOf(item)
-      const url = `/api/v1/host_details/${index}`
-      confirm(`${index}を本当に削除してよろしいですか？`) && this.$axios.delete(url) && this.hostDetails.splice(index, 1)
+      const hostNumber = this.hostDetails.[index].id
+      const hostName = this.hostDetails.[index].name
+      const url = `/api/v1/host_details/${hostNumber}`
+      confirm(`${hostName}を本当に削除してよろしいですか？`) && this.$axios.delete(url)
         .then((res) => {
           location.reload()
-          alert('削除しました')
+          alert(`${hostName}を削除しました`)
           // eslint-disable-next-line no-console
           console.log(res)
         })
         .catch((err) => {
           const message = err.response.data
-          alert('削除できませんでした')
+          alert(`${hostName}を削除できませんでした`)
           // eslint-disable-next-line no-console
           console.log(message)
         })
