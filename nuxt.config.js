@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -116,10 +118,13 @@ export default {
         access_token_endpoint: undefined,
         response_type: 'token',
         token_type: 'Bearer',
-        client_id: '560925972258-00rsdnku4ogb41uh18ggj1ir18ggibpe.apps.googleusercontent.com',
+        client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: '3PALX6nf4vJ6Ux1ljUKyeRTc',
         token_key: 'access_token'
       }
     }
+  },
+  router: {
+    middleware: ['auth']
   }
 }
