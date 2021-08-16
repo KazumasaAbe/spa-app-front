@@ -119,7 +119,6 @@ export default {
         response_type: 'token',
         token_type: 'Bearer',
         client_id: process.env.GOOGLE_CLIENT_ID,
-        client_secret: '3PALX6nf4vJ6Ux1ljUKyeRTc',
         token_key: 'access_token'
       }
     }
