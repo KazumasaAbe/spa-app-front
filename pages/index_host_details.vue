@@ -222,8 +222,15 @@ export default {
       const url = `/api/v1/host_details/${hostNumber}`
       confirm(`${hostName}を本当に削除してよろしいですか？`) && this.$axios.delete(url)
         .then((res) => {
-          location.reload()
-          alert(`${hostName}を削除しました`)
+          this.$store.dispatch(
+            'flashMessage/showMessage',
+            {
+              message: `${hostName}を削除しました`,
+              type: 'success',
+              status: true
+            },
+            { root: true }
+          )
           // eslint-disable-next-line no-console
           console.log(res)
         })
