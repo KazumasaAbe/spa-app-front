@@ -136,6 +136,7 @@
 
 <script>
 export default {
+  auth: false,
   async asyncData ({ $axios }) {
     let hostDetails = []
     await $axios.$get('/api/v1/host_details')
