@@ -217,8 +217,8 @@ export default {
 
     deleteItem (item) {
       const index = this.hostDetails.indexOf(item)
-      const hostNumber = this.hostDetails.[index].id
-      const hostName = this.hostDetails.[index].name
+      const hostNumber = this.hostDetails[index].id
+      const hostName = this.hostDetails[index].name
       const url = `/api/v1/host_details/${hostNumber}`
       confirm(`${hostName}を本当に削除してよろしいですか？`) && this.$axios.delete(url)
         .then((res) => {
