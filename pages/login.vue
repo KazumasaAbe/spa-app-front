@@ -4,10 +4,10 @@
       <v-row justify="center" align-content="center" class="text-caption">
         <v-col cols="8">
           <v-card>
-            <!--
-              <v-card-title>
-              </v-card-title>
-            -->
+            <v-card-title>
+              ログイン
+            </v-card-title>
+            <Notification v-if="errors" :messages="errors" />
             <v-card-text>
               <v-form>
                 <v-text-field
@@ -72,7 +72,8 @@ export default {
       message: '新規登録です',
       showPassword: false,
       email: '',
-      password: ''
+      password: '',
+      errors: null
     }
   },
   methods: {
@@ -105,14 +106,14 @@ export default {
             )
             // console.log(localStorage.getItem('access-token'))
             return response
-          },
-          (error) => {
-            return error
           }
         )
+        .catch((e) => {
+          this.errors = e.response.data.errors
+          console.log(this.errors)
+        })
     },
     authenticate () {
-      console.log('1')
       this.$auth.loginWith('app')
     }
   }
