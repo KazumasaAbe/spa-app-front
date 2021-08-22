@@ -148,12 +148,9 @@ export default {
 
   data: () => ({
     dialog: false,
+    detail_dialog: false,
     flashMessage: false,
     headers: [
-      {
-        text: 'ID',
-        value: 'id'
-      },
       {
         text: '店舗名',
         align: 'start',
@@ -161,7 +158,6 @@ export default {
       },
       { text: '編集 / 削除', value: 'actions', sortable: false }
     ],
-    hostDetails: [],
     editedIndex: -1,
     editedItem: {
       name: '',
@@ -220,25 +216,27 @@ export default {
       const hostNumber = this.hostDetails.[index].id
       const hostName = this.hostDetails.[index].name
       const url = `/api/v1/host_details/${hostNumber}`
-      confirm(`${hostName}を本当に削除してよろしいですか？`) && this.$axios.delete(url)
-        .then((res) => {
+      this.editedIndex = this.hostDetails.indexOf(item)
+      confirm(`${hostName}を本当に削除してよろしいですか？`) && this.hostDetails.splice(this.editedIndex, 1) && this.$axios.delete(url)
+        .then(() => {
           this.$store.dispatch(
             'flashMessage/showMessage',
             {
               message: `${hostName}を削除しました`,
               type: 'success',
               status: true
-            },
-            { root: true }
+            }
           )
-          // eslint-disable-next-line no-console
-          console.log(res)
         })
-        .catch((err) => {
-          const message = err.response.data
-          alert(`${hostName}を削除できませんでした`)
-          // eslint-disable-next-line no-console
-          console.log(message)
+        .catch(() => {
+          this.$store.dispatch(
+            'flashMessage/showMessage',
+            {
+              message: `${hostName}を削除できませんでした`,
+              type: 'error',
+              status: false
+            }
+          )
         })
     },
 
@@ -253,33 +251,51 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         const url = '/api/v1/host_details/'
+        Object.assign(this.hostDetails[this.editedIndex], this.editedItem)
         this.$axios.put(url + this.editedItem.id, this.editedItem)
-          .then((res) => {
-            location.reload()
-            alert('更新しました')
-            // eslint-disable-next-line no-console
-            console.log(res)
+          .then(() => {
+            this.$store.dispatch(
+              'flashMessage/showMessage',
+              {
+                message: '更新しました',
+                type: 'success',
+                status: true
+              }
+            )
           })
-          .catch((err) => {
-            const message = err.response.data
-            alert('更新失敗')
-            // eslint-disable-next-line no-console
-            console.log(message)
+          .catch(() => {
+            this.$store.dispatch(
+              'flashMessage/showMessage',
+              {
+                message: '更新できませんでした',
+                type: 'error',
+                status: false
+              }
+            )
           })
       } else {
         const url = '/api/v1/host_details'
+        this.hostDetails.push(this.editedItem)
         this.$axios.post(url, this.editedItem)
-          .then((res) => {
-            alert('新規登録しました')
-            location.reload()
-            // eslint-disable-next-line no-console
-            console.log(res)
+          .then(() => {
+            this.$store.dispatch(
+              'flashMessage/showMessage',
+              {
+                message: '新規登録しました',
+                type: 'success',
+                status: true
+              }
+            )
           })
-          .catch((err) => {
-            const message = err.response.data
-            alert('登録失敗')
-            // eslint-disable-next-line no-console
-            console.log(message)
+          .catch(() => {
+            this.$store.dispatch(
+              'flashMessage/showMessage',
+              {
+                message: '新規登録に失敗しました',
+                type: 'error',
+                status: false
+              }
+            )
           })
       }
       this.close()
