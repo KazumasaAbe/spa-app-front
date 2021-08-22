@@ -213,8 +213,8 @@ export default {
 
     deleteItem (item) {
       const index = this.hostDetails.indexOf(item)
-      const hostNumber = this.hostDetails.[index].id
-      const hostName = this.hostDetails.[index].name
+      const hostNumber = this.hostDetails[index].id
+      const hostName = this.hostDetails[index].name
       const url = `/api/v1/host_details/${hostNumber}`
       this.editedIndex = this.hostDetails.indexOf(item)
       confirm(`${hostName}を本当に削除してよろしいですか？`) && this.hostDetails.splice(this.editedIndex, 1) && this.$axios.delete(url)

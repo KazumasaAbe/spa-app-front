@@ -4,10 +4,10 @@
       <v-row justify="center" align-content="center" class="text-caption">
         <v-col cols="8">
           <v-card>
-            <!--
-              <v-card-title>
-              </v-card-title>
-            -->
+            <v-card-title>
+              新規登録
+            </v-card-title>
+            <Notification v-if="errors" :messages="errors" />
             <v-card-text>
               <v-form>
                 <v-text-field
@@ -50,11 +50,15 @@
 </template>
 
 <script>
+import Notification from '../components/Notification.vue'
 export default {
   name: 'SignUp',
+  components: { Notification },
+  auth: false,
   data () {
     return {
       showPassword: false,
+      errors: null,
       user: {
         email: '',
         password: '',
@@ -64,19 +68,26 @@ export default {
   },
   methods: {
     registerUser () {
-      this.$axios.post('/api/v1/auth', this.user).then((response) => {
-        this.loginWithAuthModule()
-        this.$router.push('/')
-        this.$store.dispatch(
-          'flashMessage/showMessage',
-          {
-            message: '新規登録しました',
-            type: 'success',
-            status: true
-          },
-          { root: true }
-        )
-      })
+      this.$axios.post('/api/v1/auth', this.user)
+        .then((response) => {
+          this.loginWithAuthModule()
+          this.$router.push('/')
+          this.$store.dispatch(
+            'flashMessage/showMessage',
+            {
+              message: '新規登録しました',
+              type: 'success',
+              status: true
+            },
+            { root: true }
+          )
+        })
+        .catch((e) => {
+          console.log(1)
+          this.errors = e.response.data.errors.full_messages
+          console.log(1)
+          console.log(this.errors)
+        })
     },
     loginWithAuthModule () {
       this.$auth
@@ -95,9 +106,6 @@ export default {
             localStorage.setItem('uid', response.headers.uid)
             localStorage.setItem('token-type', response.headers['token-type'])
             return response
-          },
-          (error) => {
-            return error
           }
         )
     }
