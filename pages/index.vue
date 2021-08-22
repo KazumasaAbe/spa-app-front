@@ -103,8 +103,8 @@ export default {
       dialog: false,
       marker: {},
       hostDetails: [],
-      center: { lat: 39.3321782595909, lng: 141.53094514522962 },
-      zoom: 17,
+      center: { lat: 39.33061151045439, lng: 141.53013894672827 },
+      zoom: 16,
       infoWindowPos: null,
       infoWinOpen: false,
       infoContent: {
