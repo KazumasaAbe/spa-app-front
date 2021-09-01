@@ -28,9 +28,16 @@
       :clipped-left="clipped"
       fixed
       app
+      :style="{ background: $vuetify.theme.themes.light.background }"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <router-link to="/">
+        <v-img
+          :src="image"
+          max-height="50"
+          max-width="200"
+        />
+      </router-link>
       <v-spacer />
       <v-layout justify-center>
         <span v-if="$auth.loggedIn">
@@ -54,8 +61,10 @@
     <v-footer
       :absolute="!fixed"
       app
+      style="background: #001f47"
+      class="white--text"
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; {{ new Date().getFullYear() }}</span> Tono Natural Life Network, All Rights Reserved.
     </v-footer>
   </v-app>
 </template>
@@ -95,19 +104,22 @@ export default {
       ],
       host_items: [
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-map-marker-radius',
           title: 'マップ',
           to: '/'
         },
         {
+          icon: 'mdi-account-box-multiple',
           title: '受入店一覧',
           to: '/index_host_details'
         },
         {
+          icon: 'mdi-nintendo-switch',
           title: '受入切替画面',
           to: '/switching'
         },
         {
+          icon: 'mdi-login',
           title: 'ログイン',
           to: '/login'
         }
@@ -115,7 +127,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: '遠野旅の産地直売所'
+      image: require('@/assets/image/logo_h.png')
     }
   },
   computed: {
