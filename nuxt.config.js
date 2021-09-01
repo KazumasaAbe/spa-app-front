@@ -30,7 +30,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '@/plugins/plugin', mode: 'client' },
-    { src: '~/plugins/vue2-google-maps.js', ssr: false }
+    { src: '~/plugins/vue2-google-maps.js', ssr: false },
+    { src: '~/plugins/localStorage.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

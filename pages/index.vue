@@ -96,6 +96,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   auth: false,
   data () {
@@ -120,11 +121,16 @@ export default {
       }
     }
   },
-
+  computed: {
+    ...mapGetters({
+      user: 'user_information/getUser'
+    })
+  },
   mounted () {
     this.$axios
       .get('/api/v1/host_details.json')
       .then(response => (this.hostDetails = response.data))
+    console.log(this.hostDetails)
   },
   methods: {
     onClickMarker (index, marker) {
