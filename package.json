@@ -18,7 +18,8 @@
     "nuxt": "^2.15.7",
     "vue-ctk-date-time-picker": "^2.5.0",
     "vue2-google-maps": "^0.10.7",
-    "vuetify": "^2.5.5"
+    "vuetify": "^2.5.5",
+    "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",
