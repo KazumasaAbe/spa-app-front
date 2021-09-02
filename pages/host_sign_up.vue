@@ -5,7 +5,7 @@
         <v-col cols="8">
           <v-card>
             <v-card-title>
-              新規登録
+              店舗側新規登録
             </v-card-title>
             <Notification v-if="errors" :messages="errors" />
             <v-card-text>
@@ -14,6 +14,18 @@
                   v-model="user.email"
                   prepend-icon="mdi-account-circle"
                   label="メールアドレス"
+                />
+                <v-select
+                  v-model="hostDetail"
+                  item-text="name"
+                  item-value="value"
+                  :items="details"
+                  label="店舗選択"
+                  hint="店舗を選択してください"
+                  prepend-icon="mdi-lock"
+                  persistent-hint
+                  return-object
+                  @change="hostSelect()"
                 />
                 <v-text-field
                   v-model="user.password"
@@ -52,25 +64,33 @@
 <script>
 import Notification from '../components/Notification.vue'
 export default {
-  name: 'SignUp',
+  name: 'HostSignUp',
   components: { Notification },
   auth: false,
   data () {
     return {
       showPassword: false,
       errors: null,
+      details: [],
+      hostDetail: {},
       user: {
         email: '',
+        detail: '',
         password: '',
         password_confirmation: '',
-        host: 0,
-        host_name: false
+        host: 1,
+        host_name: '',
+        host_id: ''
       }
     }
   },
+  mounted () {
+    this.$axios
+      .get('/api/v1/host_details.json')
+      .then(response => (this.details = response.data))
+  },
   methods: {
     registerUser () {
-      console.log(this.user)
       this.$axios.post('/api/v1/auth', this.user)
         .then((response) => {
           this.$router.push('/')
@@ -83,35 +103,14 @@ export default {
             },
             { root: true }
           )
-          this.loginWithAuthModule()
         })
         .catch((e) => {
           this.errors = e.response.data.errors.full_messages
         })
     },
-    loginWithAuthModule () {
-      this.$auth
-        .loginWith('local', {
-          // emailとpasswordの情報を送信
-          data: {
-            email: this.user.email,
-            password: this.user.password
-          }
-        })
-        .then(
-          (response) => {
-            console.log(response.data)
-            // レスポンスで返ってきた、認証に必要な情報をlocalStorageに保存
-            localStorage.setItem('access-token', response.headers['access-token'])
-            localStorage.setItem('client', response.headers.client)
-            localStorage.setItem('uid', response.headers.uid)
-            localStorage.setItem('token-type', response.headers['token-type'])
-            this.user = response.data
-            // this.$store.dispatch('user_information/setUser', this.user)
-            this.$store.commit('user_information/login', this.user)
-            return response
-          }
-        )
+    hostSelect () {
+      this.user.host_name = this.hostDetail.name
+      this.user.host_id = this.hostDetail.id
     }
   }
 }

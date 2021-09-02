@@ -9,7 +9,7 @@
     >
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in setItem()"
           :key="i"
           :to="item.to"
           router
@@ -70,13 +70,39 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
-      items: [
+      admin_items: [
+        {
+          title: '店舗登録',
+          to: '/create_host_detail'
+        },
+        {
+          title: '新規登録',
+          to: '/host_sign_up'
+        }
+      ],
+      default_items: [
+        {
+          icon: 'mdi-apps',
+          title: 'マップ',
+          to: '/'
+        },
+        {
+          title: '受入店一覧',
+          to: '/index_host_details'
+        },
+        {
+          title: 'ログイン',
+          to: '/login'
+        }
+      ],
+      host_items: [
         {
           icon: 'mdi-map-marker-radius',
           title: 'マップ',
@@ -104,11 +130,13 @@ export default {
       image: require('@/assets/image/logo_h.png')
     }
   },
+  computed: {
+    ...mapGetters({
+      user: 'user_information/getUser'
+    })
+  },
   methods: {
     logout () {
-      console.log(localStorage.getItem('uid'))
-      console.log(localStorage.getItem('access-token'))
-      console.log(localStorage.getItem('client'))
       this.$axios.delete('/api/v1/auth/sign_out', {
         headers: {
           uid: localStorage.getItem('uid'),
@@ -131,8 +159,21 @@ export default {
             },
             { root: true }
           )
+          this.$store.commit('user_information/logout')
         })
+    },
+    setItem () {
+      if (this.user == null) {
+        return this.default_items
+      } else if (this.user.data.admin) {
+        return this.admin_items
+      } else if (!this.user.data.admin && !this.user.data.host) {
+        return this.default_items
+      } else if (this.user.data.host) {
+        return this.host_items
+      }
     }
+
   }
 }
 </script>
