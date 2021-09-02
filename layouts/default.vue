@@ -9,7 +9,7 @@
     >
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in setItem()"
           :key="i"
           :to="item.to"
           router
@@ -28,9 +28,16 @@
       :clipped-left="clipped"
       fixed
       app
+      :style="{ background: $vuetify.theme.themes.light.background }"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <router-link to="/">
+        <v-img
+          :src="image"
+          max-height="50"
+          max-width="200"
+        />
+      </router-link>
       <v-spacer />
       <v-layout justify-center>
         <span v-if="$auth.loggedIn">
@@ -54,20 +61,33 @@
     <v-footer
       :absolute="!fixed"
       app
+      style="background: #001f47"
+      class="white--text"
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; {{ new Date().getFullYear() }}</span> Tono Natural Life Network, All Rights Reserved.
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
-      items: [
+      admin_items: [
+        {
+          title: '店舗登録',
+          to: '/create_host_detail'
+        },
+        {
+          title: '新規登録',
+          to: '/host_sign_up'
+        }
+      ],
+      default_items: [
         {
           icon: 'mdi-apps',
           title: 'マップ',
@@ -78,10 +98,28 @@ export default {
           to: '/index_host_details'
         },
         {
+          title: 'ログイン',
+          to: '/login'
+        }
+      ],
+      host_items: [
+        {
+          icon: 'mdi-map-marker-radius',
+          title: 'マップ',
+          to: '/'
+        },
+        {
+          icon: 'mdi-account-box-multiple',
+          title: '受入店一覧',
+          to: '/index_host_details'
+        },
+        {
+          icon: 'mdi-nintendo-switch',
           title: '受入切替画面',
           to: '/switching'
         },
         {
+          icon: 'mdi-login',
           title: 'ログイン',
           to: '/login'
         }
@@ -89,14 +127,16 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: '遠野旅の産地直売所'
+      image: require('@/assets/image/logo_h.png')
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'user_information/getUser'
+    })
   },
   methods: {
     logout () {
-      console.log(localStorage.getItem('uid'))
-      console.log(localStorage.getItem('access-token'))
-      console.log(localStorage.getItem('client'))
       this.$axios.delete('/api/v1/auth/sign_out', {
         headers: {
           uid: localStorage.getItem('uid'),
@@ -119,8 +159,21 @@ export default {
             },
             { root: true }
           )
+          this.$store.commit('user_information/logout')
         })
+    },
+    setItem () {
+      if (this.user == null) {
+        return this.default_items
+      } else if (this.user.data.admin) {
+        return this.admin_items
+      } else if (!this.user.data.admin && !this.user.data.host) {
+        return this.default_items
+      } else if (this.user.data.host) {
+        return this.host_items
+      }
     }
+
   }
 }
 </script>

@@ -73,7 +73,8 @@ export default {
       showPassword: false,
       email: '',
       password: '',
-      errors: null
+      errors: null,
+      user: null
     }
   },
   methods: {
@@ -104,13 +105,14 @@ export default {
               },
               { root: true }
             )
-            // console.log(localStorage.getItem('access-token'))
+            this.user = response.data
+            // this.$store.dispatch('user_information/setUser', this.user)
+            this.$store.commit('user_information/login', this.user)
             return response
           }
         )
         .catch((e) => {
           this.errors = e.response.data.errors
-          console.log(this.errors)
         })
     },
     authenticate () {

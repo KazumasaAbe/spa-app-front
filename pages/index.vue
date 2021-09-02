@@ -20,7 +20,8 @@
               :animation="Number(m.acceptable)"
               :clickable="true"
               :draggable="false"
-              :icon="{url: '/img/kappa.png', scaledSize: { width: 40, height: 40, f: 'px', b: 'px' }}"
+              :icon="{url: image(m.image),
+                      scaledSize: { width: 30, height: 30, f: 'px', b: 'px' }}"
               @click="onClickMarker(index, m)"
             />
             <GmapInfoWindow
@@ -96,6 +97,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   auth: false,
   data () {
@@ -103,8 +105,8 @@ export default {
       dialog: false,
       marker: {},
       hostDetails: [],
-      center: { lat: 39.3321782595909, lng: 141.53094514522962 },
-      zoom: 17,
+      center: { lat: 39.33061151045439, lng: 141.53013894672827 },
+      zoom: 16,
       infoWindowPos: null,
       infoWinOpen: false,
       infoContent: {
@@ -120,11 +122,16 @@ export default {
       }
     }
   },
-
+  computed: {
+    ...mapGetters({
+      user: 'user_information/getUser'
+    })
+  },
   mounted () {
     this.$axios
       .get('/api/v1/host_details.json')
       .then(response => (this.hostDetails = response.data))
+    console.log(this.hostDetails)
   },
   methods: {
     onClickMarker (index, marker) {
@@ -136,6 +143,14 @@ export default {
     },
     closeDialog () {
       this.dialog = false
+    },
+    image (i) {
+      if (i === '') {
+        return '/img/kappa.png'
+      } else {
+        console.log(i)
+        return i
+      }
     }
   }
 }
