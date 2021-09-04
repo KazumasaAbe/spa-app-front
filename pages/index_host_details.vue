@@ -94,6 +94,38 @@
                       label="店舗画像"
                     />
                   </v-col>
+                  <v-col
+                    cols="10"
+                    sm="6"
+                  >
+                    タグ
+                    <div
+                      v-for="(tags, index) in editedItem.tags"
+                      :key="index"
+                    >
+                      <v-text-field
+                        v-model="tags.tag"
+                      >
+                        <template #append-outer>
+                          <v-icon
+                            color="error"
+                            class="pill"
+                            @click="deleteTag(tags, index)"
+                          >
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </div>
+                    <v-icon
+                      color="teal"
+                      x-large
+                      class="mt-3"
+                      @click="addTag()"
+                    >
+                      mdi-plus-circle
+                    </v-icon>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -126,11 +158,6 @@
         mdi-delete
       </v-icon>
     </template>
-    <template #no-data>
-      <v-btn color="primary" @click="initialize">
-        リセット
-      </v-btn>
-    </template>
   </v-data-table>
 </template>
 
@@ -139,7 +166,7 @@ export default {
   auth: false,
   async asyncData ({ $axios }) {
     let hostDetails = []
-    await $axios.$get('/api/v1/host_details')
+    await $axios.$get('/api/v1/host_details.json')
       .then(res => (hostDetails = res))
     return {
       hostDetails
@@ -148,7 +175,7 @@ export default {
 
   data: () => ({
     dialog: false,
-    detail_dialog: false,
+    tag_form: false,
     flashMessage: false,
     headers: [
       {
@@ -169,7 +196,10 @@ export default {
       address: '',
       marker_icon: '',
       image: '',
-      maximum_acceptability: 0
+      maximum_acceptability: 0,
+      tags: {
+        tag: ''
+      }
     },
     defaultItem: {
       name: '',
@@ -181,7 +211,10 @@ export default {
       address: '',
       marker_icon: '',
       image: '',
-      maximum_acceptability: 0
+      maximum_acceptability: 0,
+      tags: {
+        tag: ''
+      }
     }
   }),
 
@@ -198,11 +231,18 @@ export default {
   },
 
   created () {
-    this.initialize()
   },
 
   methods: {
-    initialize () {
+    deleteTag (tags, i) {
+      this.editedItem.tags.splice(i, 1)
+    },
+
+    addTag () {
+      const additionalForm = {
+        tag: ''
+      }
+      this.editedItem.tags.push(additionalForm)
     },
 
     editItem (item) {
@@ -216,8 +256,7 @@ export default {
       const hostNumber = this.hostDetails[index].id
       const hostName = this.hostDetails[index].name
       const url = `/api/v1/host_details/${hostNumber}`
-      this.editedIndex = this.hostDetails.indexOf(item)
-      confirm(`${hostName}を本当に削除してよろしいですか？`) && this.hostDetails.splice(this.editedIndex, 1) && this.$axios.delete(url)
+      confirm(`${hostName}を本当に削除してよろしいですか？`) && this.hostDetails.splice(index, 1) && this.$axios.delete(url)
         .then(() => {
           this.$store.dispatch(
             'flashMessage/showMessage',
@@ -303,3 +342,17 @@ export default {
   }
 }
 </script>
+
+<style>
+  .pill {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #eee;
+    color: #777;
+    letter-spacing: 1px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+</style>
