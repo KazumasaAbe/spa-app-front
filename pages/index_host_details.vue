@@ -248,6 +248,7 @@ export default {
     editItem (item) {
       this.editedIndex = this.hostDetails.indexOf(item)
       this.editedItem = Object.assign({}, item)
+      console.log(this.editedItem.tags)
       this.dialog = true
     },
 
