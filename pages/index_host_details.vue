@@ -197,8 +197,10 @@ export default {
       marker_icon: '',
       image: '',
       maximum_acceptability: 0,
-      tags: {
-        tag: ''
+      tags_attributes: {
+        id: '',
+        tag: '',
+        host_detail_id: ''
       }
     },
     defaultItem: {
@@ -212,8 +214,10 @@ export default {
       marker_icon: '',
       image: '',
       maximum_acceptability: 0,
-      tags: {
-        tag: ''
+      tags_attributes: {
+        id: '',
+        tag: '',
+        host_detail_id: ''
       }
     }
   }),
