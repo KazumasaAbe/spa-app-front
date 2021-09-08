@@ -290,10 +290,10 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        const url = '/api/v1/host_details/'
+        const url1 = '/api/v1/host_details/'
         const url2 = `/api/v1/host_details/${this.editedItem.id}/tags`
         Object.assign(this.hostDetails[this.editedIndex], this.editedItem)
-        this.$axios.put(url + this.editedItem.id, this.editedItem)
+        this.$axios.put(url1 + this.editedItem.id, this.editedItem)
           .then(() => {
             this.$store.dispatch(
               'flashMessage/showMessage',
