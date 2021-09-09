@@ -79,25 +79,39 @@ export default {
       fixed: false,
       admin_items: [
         {
-          title: '店舗登録',
-          to: '/create_host_detail'
-        },
-        {
-          title: '新規登録',
-          to: '/host_sign_up'
-        }
-      ],
-      default_items: [
-        {
-          icon: 'mdi-apps',
+          icon: 'mdi-map-marker-radius',
           title: 'マップ',
           to: '/'
         },
         {
+          icon: 'mdi-home-plus-outline',
+          title: '店舗登録',
+          to: '/create_host_detail'
+        },
+        {
+          icon: 'mdi-account-plus',
+          title: '新規登録',
+          to: '/host_sign_up'
+        },
+        {
+          icon: 'mdi-account-plus',
+          title: 'ユーザー一覧',
+          to: '/index_users'
+        }
+      ],
+      default_items: [
+        {
+          icon: 'mdi-map-marker-radius',
+          title: 'マップ',
+          to: '/'
+        },
+        {
+          icon: 'mdi-account-box-multiple',
           title: '受入店一覧',
           to: '/index_host_details'
         },
         {
+          icon: 'mdi-login',
           title: 'ログイン',
           to: '/login'
         }
