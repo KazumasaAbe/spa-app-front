@@ -20,7 +20,7 @@
               :animation="Number(m.acceptable)"
               :clickable="true"
               :draggable="false"
-              :icon="{url: image(m.image),
+              :icon="{url: markerIcon(m.marker_icon),
                       scaledSize: { width: 30, height: 30, f: 'px', b: 'px' }}"
               @click="onClickMarker(index, m)"
             />
@@ -144,11 +144,10 @@ export default {
     closeDialog () {
       this.dialog = false
     },
-    image (i) {
+    markerIcon (i) {
       if (i === '') {
         return '/img/kappa.png'
       } else {
-        console.log(i)
         return i
       }
     }

@@ -174,6 +174,7 @@ export default {
   },
 
   data: () => ({
+    tagsUpdateUrl: '/api/v1/tags/',
     dialog: false,
     flashMessage: false,
     headers: [
@@ -288,9 +289,10 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        const url = '/api/v1/host_details/'
+        const url1 = '/api/v1/host_details/'
+        const url2 = `/api/v1/host_details/${this.editedItem.id}/tags`
         Object.assign(this.hostDetails[this.editedIndex], this.editedItem)
-        this.$axios.put(url + this.editedItem.id, this.editedItem)
+        this.$axios.put(url1 + this.editedItem.id, this.editedItem)
           .then(() => {
             this.$store.dispatch(
               'flashMessage/showMessage',
@@ -308,6 +310,17 @@ export default {
                 message: '更新できませんでした',
                 type: 'error',
                 status: false
+              }
+            )
+          })
+        this.$axios.post(url2, this.editedItem)
+          .then(() => {
+            this.$store.dispatch(
+              'flashMessage/showMessage',
+              {
+                message: '更新しました',
+                type: 'success',
+                status: true
               }
             )
           })
