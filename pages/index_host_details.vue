@@ -175,7 +175,6 @@ export default {
 
   data: () => ({
     dialog: false,
-    tag_form: false,
     flashMessage: false,
     headers: [
       {
@@ -197,10 +196,8 @@ export default {
       marker_icon: '',
       image: '',
       maximum_acceptability: 0,
-      tags_attributes: {
-        id: '',
-        tag: '',
-        host_detail_id: ''
+      tags: {
+        tag: ''
       }
     },
     defaultItem: {
@@ -214,10 +211,8 @@ export default {
       marker_icon: '',
       image: '',
       maximum_acceptability: 0,
-      tags_attributes: {
-        id: '',
-        tag: '',
-        host_detail_id: ''
+      tags: {
+        tag: ''
       }
     }
   }),
