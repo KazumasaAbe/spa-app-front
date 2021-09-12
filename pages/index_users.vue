@@ -4,9 +4,72 @@
       <v-row justify="center" align-content="center" class="text-caption">
         <v-col cols="8">
           <v-card>
-            <v-card-title>
-              ユーザー一覧
-            </v-card-title>
+            <v-tabs
+              v-model="tab"
+              color="cyan"
+            >
+              <v-tabs-slider color="cyan" />
+              <v-tab
+                v-for="tabname in tabsName"
+                :key="tabname"
+              >
+                {{ tabname }}
+              </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="tab">
+              <v-tab-item>
+                <v-card flat>
+                  <v-data-table
+                    :headers="headers"
+                    :items="host_users"
+                    :ites-per-page="10"
+                    class="elevation-1"
+                  >
+                    <template #[`item.actions`]="{ item }">
+                      <v-icon
+                        color="teal"
+                        class="mr-2"
+                        @click="editItem(item)"
+                      >
+                        mdi-pencil
+                      </v-icon>
+                      <v-icon
+                        color="error"
+                        @click="deleteItem(item)"
+                      >
+                        mdi-delete
+                      </v-icon>
+                    </template>
+                  </v-data-table>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item>
+                <v-card flat>
+                  <v-data-table
+                    :headers="headers"
+                    :items="general_users"
+                    :ites-per-page="10"
+                    class="elevation-1"
+                  >
+                    <template #[`item.actions`]="{ item }">
+                      <v-icon
+                        color="teal"
+                        class="mr-2"
+                        @click="editItem(item)"
+                      >
+                        mdi-pencil
+                      </v-icon>
+                      <v-icon
+                        color="error"
+                        @click="deleteItem(item)"
+                      >
+                        mdi-delete
+                      </v-icon>
+                    </template>
+                  </v-data-table>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
             <v-dialog
               v-model="dialog"
               max-width="800px"
@@ -51,28 +114,6 @@
               </v-card-actions>
             </v-dialog>
           </v-card>
-          <v-data-table
-            :headers="headers"
-            :items="users"
-            :ites-per-page="10"
-            class="elevation-1"
-          >
-            <template #[`item.actions`]="{ item }">
-              <v-icon
-                color="teal"
-                class="mr-2"
-                @click="editItem(item)"
-              >
-                mdi-pencil
-              </v-icon>
-              <v-icon
-                color="error"
-                @click="deleteItem(item)"
-              >
-                mdi-delete
-              </v-icon>
-            </template>
-          </v-data-table>
         </v-col>
       </v-row>
     </v-container>
@@ -87,19 +128,31 @@ export default {
       dialog: false,
       dialogDelete: false,
       formTitle: '編集',
+      tab: null,
       users: [],
+      host_users: [],
+      general_users: [],
       headers: [
         {
           text: 'メールアドレス',
           align: 'start',
           value: 'email'
         },
+        {
+          text: 'host',
+          align: 'start',
+          value: 'host'
+        },
         { text: '編集 / 削除', value: 'actions', sortable: false }
       ],
       editedItem: {
         email: ''
       },
-      editedIndex: -1
+      editedIndex: -1,
+      tabsName: [
+        '店舗側ユーザー', '一般ユーザー'
+      ],
+      text: 'abe'
     }
   },
   mounted () {
@@ -107,8 +160,18 @@ export default {
       .get('/api/v1/users.json')
       .then(response => (this.users = response.data)
       )
+    this.hostUsers()
+    this.generalUsers()
   },
   methods: {
+    hostUsers () {
+      this.host_users = this.users.filter(user => user.host === true)
+      return this.host_users
+    },
+    generalUsers () {
+      this.general_users = this.users.filter(user => user.host === false)
+      return this.general_users
+    },
     editItem (item) {
       this.editedIndex = this.users.indexOf(item)
       this.editedItem = Object.assign({}, item)
