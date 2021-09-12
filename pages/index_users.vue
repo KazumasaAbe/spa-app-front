@@ -21,7 +21,7 @@
                 <v-card flat>
                   <v-data-table
                     :headers="headers"
-                    :items="host_users"
+                    :items="hostUsers"
                     :ites-per-page="10"
                     class="elevation-1"
                   >
@@ -47,7 +47,7 @@
                 <v-card flat>
                   <v-data-table
                     :headers="headers"
-                    :items="general_users"
+                    :items="gengeralUsers"
                     :ites-per-page="10"
                     class="elevation-1"
                   >
@@ -155,19 +155,21 @@ export default {
       text: 'abe'
     }
   },
+  computed: {
+    hostUsers () {
+      return this.users.filter(user => user.host === true)
+    },
+    gengeralUsers () {
+      return this.users.filter(user => user.host === false)
+    }
+  },
   mounted () {
     this.$axios
       .get('/api/v1/users.json')
       .then(response => (this.users = response.data)
       )
-    this.hostUsers()
-    this.generalUsers()
   },
   methods: {
-    hostUsers () {
-      this.host_users = this.users.filter(user => user.host === true)
-      return this.host_users
-    },
     generalUsers () {
       this.general_users = this.users.filter(user => user.host === false)
       return this.general_users
