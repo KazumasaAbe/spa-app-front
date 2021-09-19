@@ -96,6 +96,7 @@ export default {
             localStorage.setItem('uid', response.headers.uid)
             localStorage.setItem('token-type', response.headers['token-type'])
             this.$router.push('/')
+            // this.$router.go({ path: '/', force: true })
             this.$store.dispatch(
               'flashMessage/showMessage',
               {

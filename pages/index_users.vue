@@ -132,6 +132,26 @@
                 </v-card-text>
               </v-card>
             </v-dialog>
+            <v-dialog
+              v-model="dialogDelete"
+              max-width="500px"
+            >
+              <v-card>
+                <div class="pop-up">
+                  削除してもよろしいですか？
+                </div>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn color="blue darken-1" text @click="closeDelete">
+                    Cancel
+                  </v-btn>
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">
+                    OK
+                  </v-btn>
+                  <v-spacer />
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-card>
         </v-col>
       </v-row>1
@@ -141,6 +161,7 @@
 
 <script>
 import Notification from '../components/Notification.vue'
+import TutorialVue from '../components/Tutorial.vue'
 export default {
   auth: false,
   components: { Notification },
@@ -181,6 +202,11 @@ export default {
         host_name: '',
         host_id: ''
       },
+      defaultItem: {
+        email: '',
+        host_name: '',
+        host_id: ''
+      },
       editedIndex: -1,
       tabsName: [
         '店舗側ユーザー', '一般ユーザー'
@@ -193,7 +219,7 @@ export default {
       return this.users.filter(user => user.host === true)
     },
     gengeralUsers () {
-      return this.users.filter(user => user.host === false)
+      return this.users.filter(user => user.host === false && user.admin === false)
     }
   },
   mounted () {
@@ -211,8 +237,33 @@ export default {
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-    deleteItem () {
-      console.log(2)
+    deleteItem (item) {
+      this.editedIndex = this.users.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = TutorialVue
+    },
+    deleteItemConfirm () {
+      const url = '/api/v1/users/'
+      this.$axios.delete(url + this.editedItem.id)
+        .then(() => {
+          this.users.splice(this.editedIndex, 1)
+          this.$store.dispatch(
+            'flashMessage/showMessage',
+            {
+              message: '削除しました',
+              type: 'success',
+              status: true
+            }
+          )
+          this.closeDelete()
+        })
+    },
+    closeDelete () {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
     },
     save () {
       const url = '/api/v1/users/'
