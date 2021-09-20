@@ -38,15 +38,12 @@
           max-width="200"
         />
       </router-link>
-      <span v-if="$store.$auth.loggedIn">
-        aaaaaa
-      </span>
       <v-spacer />
       <v-toolbar-items v-if="user">
         <v-menu offset-y>
           <template #activator="{on}">
             <v-btn text v-on="on">
-              <v-icon>mdi-account-circle</v-icon>{{ user.data.email }}
+              <v-icon>mdi-account-circle</v-icon>{{ user.email }}
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>
           </template>
@@ -212,17 +209,16 @@ export default {
         })
     },
     setItem () {
-      if (this.user == null) {
+      if (!this.user) {
         return this.default_items
-      } else if (this.user.data.admin) {
+      } else if (this.user.admin) {
         return this.admin_items
-      } else if (!this.user.data.admin && !this.user.data.host) {
+      } else if (!this.user.admin && !this.user.host) {
         return this.default_items
-      } else if (this.user.data.host) {
+      } else if (this.user.host) {
         return this.host_items
       }
     }
-
   }
 }
 </script>
