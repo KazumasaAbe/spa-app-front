@@ -48,7 +48,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-subheader>get help</v-subheader>
+            <v-subheader>一覧</v-subheader>
             <v-list-item
               v-for="(menu, i) in menus"
               :key="i"
@@ -108,7 +108,7 @@ export default {
           to: '/host_sign_up'
         },
         {
-          icon: 'mdi-account-plus',
+          icon: 'mdi-account-details',
           name: 'ユーザー一覧',
           to: '/index_users'
         }
@@ -159,13 +159,13 @@ export default {
       menus: [
         {
           name: 'アカウント設定',
-          icon: 'mdi-vuetify',
+          icon: 'mdi-account-cog-outline',
           to: '/account_setting',
           action: 'false'
         },
         {
           name: 'ログアウト',
-          icon: 'mdi-vuetify',
+          icon: 'mdi-logout-variant',
           action: 'logout'
         }
       ]
