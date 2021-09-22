@@ -3,94 +3,111 @@
   <v-app id="app" class="map">
     <v-container>
       <v-row justify="center">
-        <v-col
-          cols="10"
+        <GmapMap
+          ref="gmp"
+          :center="center"
+          :zoom="zoom"
+          style="width: 100%; height: 600px"
         >
-          <GmapMap
-            ref="gmp"
-            :center="center"
-            :zoom="zoom"
-            style="width: 100%; height: 600px"
+          <GmapMarker
+            v-for="(m, index) in hostDetails"
+            :key="index"
+            :title="m.name"
+            :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
+            :animation="Number(m.acceptable)"
+            :clickable="true"
+            :draggable="false"
+            :icon="{url: markerIcon(m.marker_icon),
+                    scaledSize: { width: 30, height: 30, f: 'px', b: 'px' }}"
+            @click="onClickMarker(index, m)"
+          />
+          <GmapInfoWindow
+            :options="infoOptions"
+            :position="infoWindowPos"
+            :opened="infoWinOpen"
+            @closeclick="infoWinOpen = false"
           >
-            <GmapMarker
-              v-for="(m, index) in hostDetails"
-              :key="index"
-              :title="m.name"
-              :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
-              :animation="Number(m.acceptable)"
-              :clickable="true"
-              :draggable="false"
-              :icon="{url: markerIcon(m.marker_icon),
-                      scaledSize: { width: 30, height: 30, f: 'px', b: 'px' }}"
-              @click="onClickMarker(index, m)"
-            />
-            <GmapInfoWindow
-              :options="infoOptions"
-              :position="infoWindowPos"
-              :opened="infoWinOpen"
-              @closeclick="infoWinOpen = false"
-            >
-              <p style="color: #000">
-                {{ marker.name }}
-              </p>
-            </GmapInfoWindow>
-          </GmapMap>
-          <v-dialog
-            v-model="dialog"
-            max-width="800px"
+            <p style="color: #000">
+              {{ marker.name }}
+            </p>
+          </GmapInfoWindow>
+        </GmapMap>
+        <v-row>
+          <v-btn-toggle
+            v-model="toggle_exclusive"
+            color="primary"
+            multiple
           >
-            <v-card>
-              <v-card-title>
-                <span class="layout justify-center">{{ marker.name }}</span>
-                <v-icon
-                  large
-                  color="darken-2"
-                  @click="closeDialog"
+            <v-col cols="12">
+              <v-btn
+                v-for="(tag, i) in tags"
+                :key="i"
+                class="ma-1"
+                color="success"
+                @click="
+                  activeCheck(tag, i)
+                "
+              >
+                {{ tag.tag }}
+              </v-btn>
+            </v-col>
+          </v-btn-toggle>
+        </v-row>
+        <v-dialog
+          v-model="dialog"
+          max-width="800px"
+        >
+          <v-card>
+            <v-card-title>
+              <span class="layout justify-center">{{ marker.name }}</span>
+              <v-icon
+                large
+                color="darken-2"
+                @click="closeDialog"
+              >
+                mdi-backspace-outline
+              </v-icon>
+            </v-card-title>
+            <v-card-text aligin-center>
+              <v-col
+                cols="12"
+              >
+                <span v-if="marker.acceptable_date">{{ marker.acceptable_date }}</span>
+                <span v-else>情報はありません</span>
+              </v-col>
+            </v-card-text>
+            <v-card-text>
+              <v-col
+                cols="12"
+              >
+                <span v-if="marker.rate">必要カッパ数：{{ marker.rate }} カッパ</span>
+                <span v-else>必要カッパの情報はありません</span>
+              </v-col>
+            </v-card-text>
+            <v-card-text>
+              <v-col
+                cols="12"
+              >
+                <span v-if="marker.description">{{ marker.description }}</span>
+                <span v-else>店舗情報はありません</span>
+              </v-col>
+            </v-card-text>
+            <v-card-text>
+              <v-col
+                cols="12"
+              >
+                <v-btn
+                  :href="marker.link"
+                  block
+                  color="primary"
+                  class="layout justify-center"
                 >
-                  mdi-backspace-outline
-                </v-icon>
-              </v-card-title>
-              <v-card-text aligin-center>
-                <v-col
-                  cols="12"
-                >
-                  <span v-if="marker.acceptable_date">{{ marker.acceptable_date }}</span>
-                  <span v-else>情報はありません</span>
-                </v-col>
-              </v-card-text>
-              <v-card-text>
-                <v-col
-                  cols="12"
-                >
-                  <span v-if="marker.rate">必要カッパ数：{{ marker.rate }} カッパ</span>
-                  <span v-else>必要カッパの情報はありません</span>
-                </v-col>
-              </v-card-text>
-              <v-card-text>
-                <v-col
-                  cols="12"
-                >
-                  <span v-if="marker.description">{{ marker.description }}</span>
-                  <span v-else>店舗情報はありません</span>
-                </v-col>
-              </v-card-text>
-              <v-card-text>
-                <v-col
-                  cols="12"
-                >
-                  <v-btn
-                    :href="marker.link"
-                    block
-                    color="primary"
-                    class="layout justify-center"
-                  >
-                    店舗詳細情報
-                  </v-btn>
-                </v-col>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-        </v-col>
+                  店舗詳細情報
+                </v-btn>
+              </v-col>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-row>
     </v-container>
   </v-app>
@@ -102,7 +119,12 @@ export default {
   auth: false,
   data () {
     return {
+      toggle_exclusive: [],
+      selectedTemplate: false,
+      selectedItem: false,
+      color: null,
       dialog: false,
+      tags: {},
       marker: {},
       hostDetails: [],
       center: { lat: 39.33061151045439, lng: 141.53013894672827 },
@@ -130,8 +152,12 @@ export default {
   mounted () {
     this.$axios
       .get('/api/v1/host_details.json')
-      .then(response => (this.hostDetails = response.data))
-    console.log(this.hostDetails)
+      .then(response => (this.hostDetails = response.data)
+      )
+    this.$axios
+      .get('/api/v1/tags')
+      .then(response => (this.tags = response.data)
+      )
   },
   methods: {
     onClickMarker (index, marker) {
@@ -150,6 +176,13 @@ export default {
       } else {
         return i
       }
+    },
+    activeCheck (tag, i) {
+      this.selectedTemplate = tag
+      this.selectedIndex = i
+    },
+    colorCheck (tag, i) {
+      return this.selectedTemplate && i === this.selectedIndex ? 'warning' : null
     }
   }
 }
