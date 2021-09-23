@@ -52,6 +52,12 @@
               </v-btn>
             </v-col>
           </v-btn-toggle>
+          <span>{{ toggle_exclusive }}</span>
+          <v-btn
+            @click="selectTag()"
+          >
+            check
+          </v-btn>
         </v-row>
         <v-dialog
           v-model="dialog"
@@ -119,7 +125,13 @@ export default {
   auth: false,
   data () {
     return {
+      anyTags: {},
+      manyTags: [],
+      tag_name: '',
+      selectDetails: [],
+      selectTags: [],
       toggle_exclusive: [],
+      tag_index: {},
       selectedTemplate: false,
       selectedItem: false,
       color: null,
@@ -127,6 +139,7 @@ export default {
       tags: {},
       marker: {},
       hostDetails: [],
+      selecetDetails: [],
       center: { lat: 39.33061151045439, lng: 141.53013894672827 },
       zoom: 16,
       infoWindowPos: null,
@@ -154,6 +167,7 @@ export default {
       .get('/api/v1/host_details.json')
       .then(response => (this.hostDetails = response.data)
       )
+    this.serchDetails = this.hostDetails
     this.$axios
       .get('/api/v1/tags')
       .then(response => (this.tags = response.data)
@@ -183,6 +197,41 @@ export default {
     },
     colorCheck (tag, i) {
       return this.selectedTemplate && i === this.selectedIndex ? 'warning' : null
+    },
+    selectTag () {
+      this.selectTags = []
+      this.toggle_exclusive.forEach((val) => {
+        this.method2(val)
+      })
+    },
+    method2 (i) {
+      this.selectTags.push(this.tags[i])
+      console.log(this.selectTags)
+      this.method4()
+    },
+    method4 () {
+      if (this.toggle_exclusive.length === 0) {
+        this.serchDetails = this.hostDetails
+      } else {
+        this.serchDetails = []
+        this.selectTags.forEach((item) => {
+          this.tag_name = item
+          this.method3()
+        })
+      }
+    },
+    method3 () {
+      this.hostDetails.forEach((item) => {
+        this.manyTags = item.tags
+        this.anyTags = this.manyTags[0]
+        console.log(this.anyTags)
+        if (item.tags.includes(this.tag_name)) {
+          this.serchDetails.push(this.item)
+          console.log(this.serchDetails)
+        } else {
+          console.log(false)
+        }
+      })
     }
   }
 }
