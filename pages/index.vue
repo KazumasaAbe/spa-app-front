@@ -12,21 +12,6 @@
           >
             <GmapMarker
               v-for="(m, index) in setDetails()"
-              :key="m.name"
-              :title="m.name"
-              :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
-              :animation="Number(m.acceptable)"
-              :clickable="true"
-              :draggable="false"
-              :optimized="false"
-              :z-index="0"
-              :icon="{url: markerIcon2(m.marker_icon),
-                      scaledSize: { width: 80, height: 80, f: 'px', b: 'px' },
-                      anchor: { x:25, y:18}}"
-              @click="onClickMarker(index, m)"
-            />
-            <GmapMarker
-              v-for="(m, index) in setDetails()"
               :key="index"
               :title="m.name"
               :position="{ lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) }"
@@ -261,9 +246,6 @@ export default {
       } else {
         return i
       }
-    },
-    markerIcon2 (i) {
-      return '/img/bloon1.png'
     },
     activeCheck (tag, i) {
       this.selectedTemplate = tag
