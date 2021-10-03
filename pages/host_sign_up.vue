@@ -2,7 +2,7 @@
   <v-main>
     <v-container>
       <v-row justify="center" align-content="center" class="text-caption">
-        <v-col cols="8">
+        <v-col cols="10">
           <v-card>
             <v-card-title>
               店舗側新規登録
@@ -22,7 +22,7 @@
                   :items="details"
                   label="店舗選択"
                   hint="店舗を選択してください"
-                  prepend-icon="mdi-lock"
+                  prepend-icon="mdi-home-plus-outline"
                   persistent-hint
                   return-object
                   @change="hostSelect()"

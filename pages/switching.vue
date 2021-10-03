@@ -6,8 +6,8 @@
         <v-col
           cols="12"
         >
-          <h2>受入切替画面 {{ user.data.host_name }}</h2>
-          <h2>現在の状態{{ user.data.host_id }}</h2>
+          <h2>受入切替画面 {{ user.host_name }}</h2>
+          <h2>現在の状態{{ user.host_id }}</h2>
           <h2>データ{{ statusAcceptable() }}</h2>
           <v-col
             cols="4"
@@ -72,7 +72,7 @@ export default {
   methods: {
     fetchContent () {
       this.$axios
-        .get('/api/v1/host_details/' + this.user.data.host_id)
+        .get('/api/v1/host_details/' + this.user.host_id)
         .then((res) => {
           this.detail = res.data
           console.log(this.detail)

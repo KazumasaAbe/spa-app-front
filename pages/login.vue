@@ -74,7 +74,7 @@ export default {
       email: '',
       password: '',
       errors: null,
-      user: null
+      user: {}
     }
   },
   methods: {
@@ -96,6 +96,7 @@ export default {
             localStorage.setItem('uid', response.headers.uid)
             localStorage.setItem('token-type', response.headers['token-type'])
             this.$router.push('/')
+            // this.$router.go({ path: '/', force: true })
             this.$store.dispatch(
               'flashMessage/showMessage',
               {
@@ -105,9 +106,10 @@ export default {
               },
               { root: true }
             )
-            this.user = response.data
-            // this.$store.dispatch('user_information/setUser', this.user)
-            this.$store.commit('user_information/login', this.user)
+            this.user = response.data.data
+            console.log(this.user)
+            this.$store.dispatch('user_information/setUser', this.user)
+            // this.$store.commit('user_information/login', this.user)
             return response
           }
         )

@@ -19,7 +19,7 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title v-text="item.name" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -39,18 +39,32 @@
         />
       </router-link>
       <v-spacer />
-      <v-layout justify-center>
-        <span v-if="$auth.loggedIn">
-          <v-btn
-            class="text-capitalize
-                      white--text"
-            color="deep-orange"
-            @click="logout()"
-          >
-            ログアウト
-          </v-btn>
-        </span>
-      </v-layout>
+      <v-toolbar-items v-if="user">
+        <v-menu offset-y>
+          <template #activator="{on}">
+            <v-btn text v-on="on">
+              <v-icon>mdi-account-circle</v-icon>{{ user.email }}
+              <v-icon>mdi-menu-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-subheader>一覧</v-subheader>
+            <v-list-item
+              v-for="(menu, i) in menus"
+              :key="i"
+              :to="menu.to"
+              @click="menuActionClick(menu.action)"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ menu.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="menu.name" />
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-toolbar-items>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -80,68 +94,81 @@ export default {
       admin_items: [
         {
           icon: 'mdi-map-marker-radius',
-          title: 'マップ',
+          name: 'マップ',
           to: '/'
         },
         {
           icon: 'mdi-home-plus-outline',
-          title: '店舗登録',
+          name: '店舗登録',
           to: '/create_host_detail'
         },
         {
           icon: 'mdi-account-plus',
-          title: '新規登録',
+          name: '新規登録',
           to: '/host_sign_up'
         },
         {
-          icon: 'mdi-account-plus',
-          title: 'ユーザー一覧',
+          icon: 'mdi-account-details',
+          name: 'ユーザー一覧',
           to: '/index_users'
         }
       ],
       default_items: [
         {
           icon: 'mdi-map-marker-radius',
-          title: 'マップ',
+          name: 'マップ',
           to: '/'
         },
         {
           icon: 'mdi-account-box-multiple',
-          title: '受入店一覧',
+          name: '受入店一覧',
           to: '/index_host_details'
         },
         {
           icon: 'mdi-login',
-          title: 'ログイン',
+          name: 'ログイン',
           to: '/login'
         }
       ],
       host_items: [
         {
           icon: 'mdi-map-marker-radius',
-          title: 'マップ',
+          name: 'マップ',
           to: '/'
         },
         {
           icon: 'mdi-account-box-multiple',
-          title: '受入店一覧',
+          name: '受入店一覧',
           to: '/index_host_details'
         },
         {
           icon: 'mdi-nintendo-switch',
-          title: '受入切替画面',
+          name: '受入切替画面',
           to: '/switching'
         },
         {
           icon: 'mdi-login',
-          title: 'ログイン',
+          name: 'ログイン',
           to: '/login'
         }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      image: require('@/assets/image/logo_h.png')
+      image: require('@/assets/image/logo_h.png'),
+      menus: [
+        {
+          name: 'アカウント設定',
+          icon: 'mdi-account-cog-outline',
+          to: '/account_setting',
+          action: 'false'
+        },
+        {
+          name: 'ログアウト',
+          icon: 'mdi-logout-variant',
+          action: 'logout'
+        }
+      ]
     }
   },
   computed: {
@@ -150,6 +177,11 @@ export default {
     })
   },
   methods: {
+    menuActionClick (action) {
+      if (action === 'logout') {
+        this.logout()
+      }
+    },
     logout () {
       this.$axios.delete('/api/v1/auth/sign_out', {
         headers: {
@@ -177,17 +209,16 @@ export default {
         })
     },
     setItem () {
-      if (this.user == null) {
+      if (!this.user) {
         return this.default_items
-      } else if (this.user.data.admin) {
+      } else if (this.user.admin) {
         return this.admin_items
-      } else if (!this.user.data.admin && !this.user.data.host) {
+      } else if (!this.user.admin && !this.user.host) {
         return this.default_items
-      } else if (this.user.data.host) {
+      } else if (this.user.host) {
         return this.host_items
       }
     }
-
   }
 }
 </script>
