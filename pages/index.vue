@@ -73,7 +73,8 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" sm="12" xs="12">
+          <h3>地図上に表示されているお店</h3>
           <v-data-table
             :headers="headers"
             :items="setDetails()"
@@ -195,7 +196,7 @@ export default {
       },
       headers: [
         {
-          text: '地図上に表示されているお店名',
+          text: '店名',
           align: 'start',
           sortable: false,
           value: 'name'
