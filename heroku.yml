@@ -7,6 +7,6 @@ build:
     web: Dockerfile
   config:
     WORKDIR: app
-    API_URL: "https://spa-app-api.herokuapp.com"
+    API_URL: "https://tono-yamasatonet-api.herokuapp.com"
 run:
   web: yarn run start
