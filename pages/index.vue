@@ -39,7 +39,7 @@
         </v-col>
       </v-row>
       <v-row justify="center">
-        <v-btn-toggle
+        <!-- <v-btn-toggle
           v-model="toggle_exclusive"
           color="primary"
           multiple
@@ -58,9 +58,57 @@
               {{ tag.tag }}
             </v-btn>
           </v-col>
-        </v-btn-toggle>
+        </v-btn-toggle> -->
+        <v-select
+          v-model="toggle_exclusive"
+          item-text="tag"
+          :items="tagsIndex"
+          :menu-props="{ maxHeight: '200' }"
+          label="タグを選択してください"
+          multiple
+          hint="Pick your Detail"
+          persistent-hint
+        />
       </v-row>
       <v-row>
+        <v-col>
+          <h3>地図上に表示されているお店</h3>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col
+          cols="3"
+          xs="1"
+          sm="1"
+          md="1"
+          xl="1"
+          class="pr-3"
+        >
+          <img src="/img/kappa.png" width="100%">
+        </v-col>
+        <v-col
+          cols="7"
+          sm="7"
+          xs="7"
+        >
+          <div class="balloon1">
+            <p>お店クリックで地図上で確認できるッパ</p>
+          </div>
+        </v-col>
+
+        <v-spacer />
+
+        <v-col cols="2" class="pt-6">
+          <v-btn
+            color="#001F47"
+            dark
+            @click="filterReset()"
+          >
+            filterリセット
+          </v-btn>
+        </v-col>
+      </v-row>
+      <!--<v-row>
         <v-col cols="12">
           <ul>
             <li
@@ -71,23 +119,23 @@
             </li>
           </ul>
         </v-col>
-      </v-row>
+      </v-row>-->
       <v-row>
         <v-col cols="12" sm="12" xs="12">
-          <h3>地図上に表示されているお店</h3>
           <v-data-table
             :headers="headers"
             :items="setDetails()"
             sort-by="name"
             class="elevation-1"
+            @click:row="clickRow"
           >
             <template #[`item.tags`]="{ item }">
               <v-btn
                 v-for="(tag,i) in item.tags"
                 :key="i"
-                class="ma-1"
                 sm
                 disabled
+                class="ma-1"
               >
                 {{ tag.tag }}
               </v-btn>
@@ -162,6 +210,9 @@ export default {
   auth: false,
   data () {
     return {
+      select: [],
+      select_host_check: 0,
+      select_host: [],
       finish_host: [],
       finish: [],
       result: [],
@@ -231,6 +282,20 @@ export default {
       })
   },
   methods: {
+    filterReset () {
+      console.log(this.select)
+      this.select_host_check = 0
+    },
+    clickRow (row) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+      this.select_host_check = 1
+      this.select_host = []
+      this.select_host.push(row)
+      console.log(this.select_host_check)
+    },
     onClickMarker (index, marker) {
       this.$refs.gmp.panTo({ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) })
       this.infoWindowPos = { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }
@@ -263,12 +328,15 @@ export default {
       this.method3()
     },
     method2 (i) {
-      this.selectTags.push(this.tagsIndex[i])
+      // btnver this.selectTags.push(this.tagsIndex[i])
+      this.selectTags.push(i)
+      console.log(this.selectTags)
     },
     method3 () {
       this.serch = []
       this.selectTags.forEach((item) => {
-        this.sample = this.tagsAll.filter(tag => tag.tag === item.tag)
+        // btn ver this.sample = this.tagsAll.filter(tag => tag.tag === item.tag)
+        this.sample = this.tagsAll.filter(tag => tag.tag === item)
         this.method5()
       })
       this.method6()
@@ -303,12 +371,13 @@ export default {
       }
     },
     setDetails () {
-      if (this.finish_host[0]) {
-        console.log(1)
+      if (this.finish_host[0] && this.select_host_check === 0) {
         return this.finish_host
-      } else {
-        console.log(2)
+      } else if (!this.finish_host[0] && this.select_host_check === 0) {
         return this.hostDetails
+      } else if (this.select_host_check === 1) {
+        console.log(this.select_host)
+        return this.select_host
       }
     }
   }
@@ -319,6 +388,44 @@ export default {
   .map {
     margin-top:50px;
   }
+  .balloon {
+    font-size: 12px;
+  }
+  .balloon::before {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -15px;
+    border: 15px solid transparent;
+    border-top: 15px solid #164a94;
+  }
+ .balloon1 {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 15px 15px;
+  min-width: 120px;
+  max-width: 100%;
+  color: #fff;
+  font-size: 16px;
+  background: #64cc44;
+  border-radius: 15px;
+}
+
+.balloon1:before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: -1%;
+  margin-left: -15px;
+  border: 10px solid transparent;
+  border-right: 10px solid #64cc44;
+}
+
+.balloon1 p {
+  margin: 0;
+  padding: 0;
+}
 </style>
 
 /* eslint-enable */
