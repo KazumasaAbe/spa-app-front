@@ -39,7 +39,7 @@
         </v-col>
       </v-row>
       <v-row justify="center">
-        <!-- <v-btn-toggle
+        <v-btn-toggle
           v-model="toggle_exclusive"
           color="primary"
           multiple
@@ -58,8 +58,8 @@
               {{ tag.tag }}
             </v-btn>
           </v-col>
-        </v-btn-toggle> -->
-        <v-select
+        </v-btn-toggle>
+        <!-- <v-select
           v-model="toggle_exclusive"
           item-text="tag"
           :items="tagsIndex"
@@ -68,7 +68,7 @@
           multiple
           hint="Pick your Detail"
           persistent-hint
-        />
+        />-->
       </v-row>
       <v-row>
         <v-col>
@@ -79,7 +79,7 @@
         <v-col
           cols="3"
           xs="1"
-          sm="1"
+          sm="2"
           md="1"
           xl="1"
           class="pr-3"
@@ -98,8 +98,17 @@
 
         <v-spacer />
 
-        <v-col cols="2" class="pt-6">
+        <v-col
+          cols="12"
+          xs="4"
+          offset-xs="3"
+          sm="3"
+          md="3"
+          xl="1"
+          class="pt-6"
+        >
           <v-btn
+            sm
             color="#001F47"
             dark
             @click="filterReset()"
@@ -108,7 +117,8 @@
           </v-btn>
         </v-col>
       </v-row>
-      <!--<v-row>
+      <!-- selectverの時抜く-->
+      <v-row>
         <v-col cols="12">
           <ul>
             <li
@@ -119,7 +129,7 @@
             </li>
           </ul>
         </v-col>
-      </v-row>-->
+      </v-row>
       <v-row>
         <v-col cols="12" sm="12" xs="12">
           <v-data-table
@@ -328,15 +338,14 @@ export default {
       this.method3()
     },
     method2 (i) {
-      // btnver this.selectTags.push(this.tagsIndex[i])
-      this.selectTags.push(i)
-      console.log(this.selectTags)
+      this.selectTags.push(this.tagsIndex[i])
+      // selectver this.selectTags.push(i)
     },
     method3 () {
       this.serch = []
       this.selectTags.forEach((item) => {
-        // btn ver this.sample = this.tagsAll.filter(tag => tag.tag === item.tag)
-        this.sample = this.tagsAll.filter(tag => tag.tag === item)
+        this.sample = this.tagsAll.filter(tag => tag.tag === item.tag)
+        // selectver this.sample = this.tagsAll.filter(tag => tag.tag === item)
         this.method5()
       })
       this.method6()
