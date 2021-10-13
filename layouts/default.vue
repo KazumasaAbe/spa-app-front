@@ -3,7 +3,7 @@
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
-      :clipped="clipped"
+      clipped
       fixed
       app
     >
@@ -25,7 +25,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
-      :clipped-left="clipped"
+      clipped-left
       fixed
       app
       :style="{ background: $vuetify.theme.themes.light.background }"
@@ -88,32 +88,9 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      clipped: false,
-      drawer: false,
+      drawer: null,
       fixed: false,
       admin_items: [
-        {
-          icon: 'mdi-map-marker-radius',
-          name: 'マップ',
-          to: '/'
-        },
-        {
-          icon: 'mdi-home-plus-outline',
-          name: '店舗登録',
-          to: '/create_host_detail'
-        },
-        {
-          icon: 'mdi-account-plus',
-          name: '新規登録',
-          to: '/host_sign_up'
-        },
-        {
-          icon: 'mdi-account-details',
-          name: 'ユーザー一覧',
-          to: '/index_users'
-        }
-      ],
-      default_items: [
         {
           icon: 'mdi-map-marker-radius',
           name: 'マップ',
@@ -123,6 +100,28 @@ export default {
           icon: 'mdi-account-box-multiple',
           name: '受入店一覧',
           to: '/index_host_details'
+        },
+        {
+          icon: 'mdi-account-plus',
+          name: '店舗登録',
+          to: '/host_sign_up'
+        },
+        {
+          icon: 'mdi-account-details',
+          name: 'ユーザー一覧',
+          to: '/index_users'
+        },
+        {
+          icon: 'mdi-nintendo-switch',
+          name: '受入切替画面',
+          to: '/admin_switching'
+        }
+      ],
+      default_items: [
+        {
+          icon: 'mdi-map-marker-radius',
+          name: 'マップ',
+          to: '/'
         },
         {
           icon: 'mdi-login',
@@ -137,19 +136,9 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-account-box-multiple',
-          name: '受入店一覧',
-          to: '/index_host_details'
-        },
-        {
           icon: 'mdi-nintendo-switch',
           name: '受入切替画面',
           to: '/switching'
-        },
-        {
-          icon: 'mdi-login',
-          name: 'ログイン',
-          to: '/login'
         }
       ],
       miniVariant: false,
