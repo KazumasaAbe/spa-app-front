@@ -21,7 +21,7 @@
               :optimized="false"
               :z-index="1"
               :icon="{url: markerIcon(m.marker_icon),
-                      scaledSize: { width: 30, height: 30, f: 'px', b: 'px' },
+                      scaledSize: { width: 35, height: 35, f: 'px', b: 'px' },
                       anchor: { x:0, y:0}}"
               @click="onClickMarker(index, m)"
             />
@@ -38,13 +38,16 @@
           </GmapMap>
         </v-col>
       </v-row>
-      <v-row justify="center">
+      <v-row
+        justify="center"
+        class="ma-2"
+      >
         <v-btn-toggle
           v-model="toggle_exclusive"
           color="primary"
           multiple
         >
-          <v-col cols="12">
+          <v-col cols="12" class="tags_select">
             <v-btn
               v-for="(tag, i) in tagsIndex"
               :key="i"
@@ -70,14 +73,28 @@
           persistent-hint
         />-->
       </v-row>
+      <!-- selectverの時抜く-->
+      <v-row>
+        <v-col cols="12">
+          <ul>
+            <li
+              v-for="(name, i) in selectTags"
+              :key="i"
+            >
+              {{ name.tag }}
+            </li>
+          </ul>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col>
+          <v-divider class="mb-3" />
           <h3>地図上に表示されているお店</h3>
         </v-col>
       </v-row>
       <v-row justify="center">
         <v-col
-          cols="3"
+          cols="2"
           xs="1"
           sm="2"
           md="1"
@@ -87,9 +104,8 @@
           <img src="/img/kappa.png" width="100%">
         </v-col>
         <v-col
-          cols="7"
+          cols="10"
           sm="7"
-          xs="7"
         >
           <div class="balloon1">
             <p>お店クリックで地図上で確認できるッパ</p>
@@ -100,15 +116,13 @@
 
         <v-col
           cols="12"
-          xs="4"
-          offset-xs="3"
           sm="3"
           md="3"
           xl="1"
           class="pt-6"
         >
           <v-btn
-            sm
+            block
             color="#001F47"
             dark
             @click="filterReset()"
@@ -158,7 +172,7 @@
           v-model="dialog"
           max-width="800px"
         >
-          <v-card>
+          <v-card color="rgb(241, 248, 200)">
             <v-card-title>
               <span class="layout justify-center">{{ marker.name }}</span>
               <v-icon
@@ -171,8 +185,16 @@
             </v-card-title>
             <v-card-text aligin-center>
               <v-col
-                cols="12"
+                cols="10"
+                offset="2"
               >
+                <v-img
+                  max-height="80%"
+                  max-width="80%"
+                  :src="setImage()"
+                />
+              </v-col>
+              <v-col>
                 <span v-if="marker.acceptable_date">{{ marker.acceptable_date }}</span>
                 <span v-else>情報はありません</span>
               </v-col>
@@ -199,6 +221,7 @@
               >
                 <v-btn
                   :href="marker.link"
+                  target="_blank"
                   block
                   color="primary"
                   class="layout justify-center"
@@ -292,6 +315,13 @@ export default {
       })
   },
   methods: {
+    setImage () {
+      if (this.marker.image) {
+        return this.marker.image
+      } else {
+        return '/img/kappa.png'
+      }
+    },
     filterReset () {
       console.log(this.select)
       this.select_host_check = 0
@@ -434,6 +464,10 @@ export default {
 .balloon1 p {
   margin: 0;
   padding: 0;
+}
+.tags_select {
+  background-color: rgb(241, 248, 200);
+  border-radius: 10px;
 }
 </style>
 

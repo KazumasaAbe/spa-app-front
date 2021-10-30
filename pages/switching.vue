@@ -7,7 +7,6 @@
           cols="12"
         >
           <h2>受入切替画面 {{ user.host_name }}</h2>
-          <h2>現在の状態{{ user.host_id }}</h2>
           <h2>データ{{ statusAcceptable() }}</h2>
           <v-col
             cols="4"
