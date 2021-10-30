@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <v-app id="app" class="switching">
     <v-container>
@@ -116,4 +115,3 @@ export default {
   }
 }
 </script>
-/* eslint-enable */
