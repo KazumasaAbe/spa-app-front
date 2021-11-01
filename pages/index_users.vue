@@ -163,8 +163,9 @@
 import Notification from '../components/Notification.vue'
 import TutorialVue from '../components/Tutorial.vue'
 export default {
-  auth: false,
   components: { Notification },
+  middleware: 'redirect',
+  auth: false,
   data () {
     return {
       dialog: false,

@@ -66,6 +66,7 @@ import Notification from '../components/Notification.vue'
 export default {
   name: 'HostSignUp',
   components: { Notification },
+  middleware: 'redirect',
   auth: false,
   data () {
     return {
@@ -109,6 +110,7 @@ export default {
         })
     },
     hostSelect () {
+      console.log(this.$auth.user)
       this.user.host_name = this.hostDetail.name
       this.user.host_id = this.hostDetail.id
     }

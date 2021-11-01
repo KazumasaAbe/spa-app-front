@@ -181,6 +181,7 @@
 
 <script>
 export default {
+  middleware: 'redirect',
   auth: false,
   success: false,
   async asyncData ({ $axios }) {

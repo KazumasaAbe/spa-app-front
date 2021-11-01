@@ -105,6 +105,8 @@
 
 <script>
 export default {
+  middleware: 'redirect',
+  auth: false,
   data () {
     return {
       OK: '受入可',
