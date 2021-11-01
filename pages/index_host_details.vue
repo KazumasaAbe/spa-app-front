@@ -52,12 +52,38 @@
                       <v-btn color="blue" outlined @click="addressSearch">
                         住所から緯度経度を検索
                       </v-btn>
-                      <v-btn v-if="lat">
-                        緯度：{{ lat }}
-                      </v-btn>
-                      <v-btn v-if="lng">
-                        経度：{{ lng }}
-                      </v-btn>
+                      <div v-if="lat">
+                        緯度：
+                        <v-btn
+                          class="ma-2"
+                          color="info"
+                          @click="copyToLat()"
+                        >
+                          {{ lat }}
+                          <v-icon
+                            right
+                            dark
+                          >
+                            mdi-content-copy
+                          </v-icon>
+                        </v-btn>
+                      </div>
+                      <div v-if="lng">
+                        経度：
+                        <v-btn
+                          class="ma-2"
+                          color="info"
+                          @click="copyToLng()"
+                        >
+                          {{ lng }}
+                          <v-icon
+                            right
+                            dark
+                          >
+                            mdi-content-copy
+                          </v-icon>
+                        </v-btn>
+                      </div>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
@@ -272,6 +298,15 @@ export default {
   },
 
   methods: {
+    copyToLat () {
+      navigator.clipboard
+        .writeText(this.lat)
+    },
+    copyToLng () {
+      navigator.clipboard
+        .writeText(this.lng)
+    },
+
     addressSearch () {
       const google = window.google
       this.geocoder = new google.maps.Geocoder()
@@ -281,8 +316,6 @@ export default {
         if (status === google.maps.GeocoderStatus.OK) {
           this.lat = results[0].geometry.location.lat()
           this.lng = results[0].geometry.location.lng()
-          this.editedItem.latitude = this.lat
-          this.editedItem.longitude = this.lng
         }
       })
     },
