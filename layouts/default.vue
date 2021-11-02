@@ -34,8 +34,8 @@
       <router-link to="/">
         <v-img
           :src="image"
-          max-height="50"
-          max-width="200"
+          max-height="35px"
+          max-width="165px"
         />
       </router-link>
       <v-spacer />

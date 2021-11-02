@@ -73,7 +73,6 @@ export default {
         .get('/api/v1/host_details/' + this.user.host_id)
         .then((res) => {
           this.detail = res.data
-          console.log(this.detail)
         })
     },
     statusAcceptable () {

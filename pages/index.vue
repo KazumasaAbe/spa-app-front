@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <v-app id="app" class="map">
     <v-container>
@@ -438,37 +437,30 @@ export default {
     border: 15px solid transparent;
     border-top: 15px solid #164a94;
   }
- .balloon1 {
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  padding: 15px 15px;
-  min-width: 120px;
-  max-width: 100%;
-  color: #fff;
-  font-size: 16px;
-  background: #64cc44;
-  border-radius: 15px;
-}
 
-.balloon1:before {
-  content: "";
-  position: absolute;
-  top: 30%;
-  left: -1%;
-  margin-left: -15px;
-  border: 10px solid transparent;
-  border-right: 10px solid #64cc44;
-}
-
-.balloon1 p {
-  margin: 0;
-  padding: 0;
-}
-.tags_select {
-  background-color: rgb(241, 248, 200);
-  border-radius: 10px;
-}
+  .balloon1 {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 15px 15px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #fff;
+    font-size: 16px;
+    background: #64cc44;
+    border-radius: 15px;
+  }
+  .balloon1:before {
+    content: "";
+    position: absolute;
+    top: 30%;
+    left: -1%;
+    margin-left: -15px;
+    border: 10px solid transparent;
+    border-right: 10px solid #64cc44;
+  }
+  .balloon1 p {
+    margin: 0;
+    padding: 0;
+  }
 </style>
-
-/* eslint-enable */
