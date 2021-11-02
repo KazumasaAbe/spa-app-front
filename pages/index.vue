@@ -117,7 +117,7 @@
           cols="12"
           sm="3"
           md="3"
-          xl="1"
+          xl="2"
           class="pt-6"
         >
           <v-btn
