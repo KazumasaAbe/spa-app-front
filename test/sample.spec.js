@@ -7,3 +7,9 @@ describe('HelloWorld', () => {
     expect(wrapper.text()).toBe('Hello World')
   })
 })
+
+describe('two plus two is four', () => {
+  test('tow plus', () => {
+    expect(2 + 2).toBe(4)
+  })
+})

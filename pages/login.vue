@@ -41,7 +41,7 @@
                 </v-card-actions>
               </v-layout>
               <v-divider />
-              <!--Googleでログイン-->
+              <!--Googleでログイン
               <v-card-actions>
                 <v-btn
                   class="text-capitalize
@@ -55,7 +55,7 @@
                   Googleでログイン
                   <v-spacer />
                 </v-btn>
-              </v-card-actions>
+              </v-card-actions>-->
             </v-card-text>
           </v-card>
         </v-col>

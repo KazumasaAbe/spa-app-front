@@ -119,11 +119,28 @@
                         label="最大受入人数"
                       />
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <!--<v-col cols="12" sm="6">
                       <v-text-field
                         v-model="editedItem.marker_icon"
                         label="マーカーアイコン"
                       />
+                    </v-col>-->
+                    <v-col cols="12" sm="6">
+                      <v-select
+                        v-model="marker_icon_obj"
+                        item-text="name"
+                        item-value="value"
+                        :items="marker_icons"
+                        label="アイコン選択"
+                        hint="アイコンを選択してください"
+                        prepend-icon="mdi-home-plus-outline"
+                        persistent-hint
+                        return-object
+                        @change="iconChange(marker_icon_obj)"
+                      />
+                      <v-col cols="12" offset="3">
+                        <img :src="marker_icon_obj.url" width="50%" class="marker_icon">
+                      </v-col>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
@@ -220,6 +237,7 @@ export default {
   },
 
   data: () => ({
+    marker_icon_obj: { name: 'カッパ', url: '/img/kappa.png' },
     lat: '',
     lng: '',
     geocoder: {},
@@ -246,6 +264,20 @@ export default {
       },
       { text: '編集 / 削除', value: 'actions', sortable: false }
     ],
+    marker_icons: [
+      {
+        name: 'カッパ',
+        url: '/img/kappa.png'
+      },
+      {
+        name: 'ご飯',
+        url: '/img/eat.png'
+      },
+      {
+        name: 'カフェ',
+        url: '/img/cafe.png'
+      }
+    ],
     editedIndex: -1,
     editedItem: {
       name: '',
@@ -255,7 +287,7 @@ export default {
       description: '',
       link: '',
       address: '',
-      marker_icon: '',
+      marker_icon: '/img/kappa.png',
       image: '',
       maximum_acceptability: 0,
       tags: {
@@ -444,6 +476,10 @@ export default {
       } else {
         this.success = false
       }
+    },
+    iconChange (icon) {
+      this.editedItem.marker_icon = icon.url
+      console.log(this.editedItem.marker_icon)
     }
   }
 }
@@ -461,4 +497,5 @@ export default {
     font-weight: bold;
     cursor: pointer;
   }
+
 </style>
