@@ -22,6 +22,7 @@
               class="mb-2"
               v-bind="attrs"
               v-on="on"
+              @click="resetData()"
             >
               新規追加
             </v-btn>
@@ -276,6 +277,14 @@ export default {
       {
         name: 'カフェ',
         url: '/img/cafe.png'
+      },
+      {
+        name: '体験',
+        url: '/img/experience.png'
+      },
+      {
+        name: 'お酒',
+        url: '/img/beel.png'
       }
     ],
     editedIndex: -1,
@@ -367,6 +376,11 @@ export default {
     editItem (item) {
       this.editedIndex = this.hostDetails.indexOf(item)
       this.editedItem = Object.assign({}, item)
+      if (this.editedItem.marker_icon) {
+        this.marker_icon_obj_fake = this.marker_icons.filter(icon => icon.url === item.marker_icon)
+        this.marker_icon_obj = this.marker_icon_obj_fake[0]
+        console.log(this.marker_icon_obj)
+      }
       this.dialog = true
     },
 
@@ -479,7 +493,9 @@ export default {
     },
     iconChange (icon) {
       this.editedItem.marker_icon = icon.url
-      console.log(this.editedItem.marker_icon)
+    },
+    resetData () {
+      this.marker_icon_obj = { name: 'カッパ', url: '/img/kappa.png' }
     }
   }
 }
