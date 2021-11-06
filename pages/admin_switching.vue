@@ -1,10 +1,12 @@
 <template>
   <v-app id="app" class="switching">
     <v-container>
-      <h2
-        class="my-5"
-      >
-        管理者用受入切替画面
+      <h2 class="my-5">
+        <span
+          class="main-title"
+        >
+          管理者用受入切替画面
+        </span>
       </h2>
       <v-row
         justify="center"
@@ -152,3 +154,13 @@ export default {
   }
 }
 </script>
+
+<style scope>
+  .main-title {
+    color: #444444;
+    padding-bottom: 5px;
+    border-bottom: solid;
+    border-color: #C0C0C0;
+    border-width: 2px;
+  }
+</style>

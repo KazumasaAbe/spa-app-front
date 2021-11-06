@@ -1,46 +1,72 @@
 <template>
   <v-app id="app" class="switching">
     <v-container>
-      <v-row justify="center">
+      <v-row>
         <v-col
           cols="12"
         >
-          <h2>受入切替画面 {{ user.host_name }}</h2>
-          <h2>データ{{ statusAcceptable() }}</h2>
-          <v-col
-            cols="4"
+          <h2 class="my-5">
+            <span class="main-title">受入切替画面</span>
+          </h2>
+          <h4 class="host-info">
+            店舗名：{{ user.host_name }}
+          </h4>
+          <h4 class="host-info">
+            現在の状態：
+            <span v-if="detail.acceptable === 1">
+              <v-btn
+                color="success"
+                dark
+                outlined
+                class="elevation-3 font-weight-bold"
+              >
+                <span v-text="OK" />
+              </v-btn>
+            </span>
+            <span else>
+              <v-btn
+                color="error"
+                dark
+                outlined
+                class="elevation-3 font-weight-bold"
+              >
+                <span v-text="NG" />
+              </v-btn>
+            </span>
+          </h4>
+        </v-col>
+      </v-row>
+      <v-row
+        justify="center"
+        aligin="center"
+      >
+        <v-col
+          cols="5"
+        >
+          <v-btn
+            color="success"
+            x-large
+            dark
+            outlined
+            class="elevation-3 font-weight-bold"
+            @click="possibleAcceptable()"
           >
             <span v-text="OK" />
-            <v-btn
-              color="success"
-              fab
-              x-large
-              dark
-            >
-              <v-icon
-                @click="possibleAcceptable()"
-              >
-                mdi-map-marker-radius
-              </v-icon>
-            </v-btn>
-          </v-col>
-          <v-col
-            cols="4"
+          </v-btn>
+        </v-col>
+        <v-col
+          cols="5"
+        >
+          <v-btn
+            color="error"
+            x-large
+            dark
+            outlined
+            class="elevation-3 font-weight-bold"
+            @click="impossibleAcceptable()"
           >
             <span v-text="NG" />
-            <v-btn
-              color="error"
-              fab
-              x-large
-              dark
-            >
-              <v-icon
-                @click="impossibleAcceptable()"
-              >
-                mdi-map-marker-remove
-              </v-icon>
-            </v-btn>
-          </v-col>
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -52,7 +78,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      OK: '受入可',
+      OK: '受入可能',
       NG: '受入不可',
       status_message: '',
       type: '',
@@ -79,7 +105,14 @@ export default {
       if (this.detail.acceptable === 1) {
         return '営業中'
       } else {
-        return '満杯です'
+        return '満杯'
+      }
+    },
+    gerColor () {
+      if (this.detail.acceptable === 1) {
+        return 'green'
+      } else {
+        return 'red'
       }
     },
     possibleAcceptable () {
@@ -114,3 +147,17 @@ export default {
   }
 }
 </script>
+
+<style scope>
+  .main-title {
+    color: #444444;
+    padding-bottom: 5px;
+    border-bottom: solid;
+    border-color: #C0C0C0;
+    border-width: 2px;
+  }
+  .host-info {
+    color: #444444;
+    margin: 30px 0px;
+  }
+</style>
