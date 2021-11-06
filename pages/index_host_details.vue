@@ -22,6 +22,7 @@
               class="mb-2"
               v-bind="attrs"
               v-on="on"
+              @click="newItem()"
             >
               新規追加
             </v-btn>
@@ -49,7 +50,7 @@
                       />
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-btn color="blue" outlined @click="addressSearch">
+                      <v-btn color="blue" outlined @click="addressSearch()">
                         住所から緯度経度を検索
                       </v-btn>
                       <div v-if="lat">
@@ -153,7 +154,7 @@
                             <v-icon
                               color="error"
                               class="pill"
-                              @click="deleteTag(tags, index)"
+                              @click="deleteTag(index)"
                             >
                               mdi-delete
                             </v-icon>
@@ -320,7 +321,7 @@ export default {
       })
     },
 
-    deleteTag (tags, i) {
+    deleteTag (i) {
       this.editedItem.tags.splice(i, 1)
     },
 
@@ -328,7 +329,15 @@ export default {
       const additionalForm = {
         tag: ''
       }
-      this.editedItem.tags.push(additionalForm)
+      if (this.editedIndex > -1) {
+        this.editedItem.tags.push(additionalForm)
+      } else {
+        this.editedItem.tags.push(additionalForm)
+      }
+    },
+
+    newItem () {
+      this.editedItem.tags = []
     },
 
     editItem (item) {

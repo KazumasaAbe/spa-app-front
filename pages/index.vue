@@ -437,7 +437,6 @@ export default {
     border: 15px solid transparent;
     border-top: 15px solid #164a94;
   }
-
   .balloon1 {
     position: relative;
     display: inline-block;
@@ -462,5 +461,9 @@ export default {
   .balloon1 p {
     margin: 0;
     padding: 0;
+  }
+  .tags_select {
+    background-color: rgb(241, 248, 200);
+    border-radius: 10px;
   }
 </style>
