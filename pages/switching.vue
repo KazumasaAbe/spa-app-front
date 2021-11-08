@@ -1,47 +1,68 @@
 <template>
-  <v-app id="app" class="switching">
+  <v-app id="app">
     <v-container>
-      <v-row justify="center">
+      <v-row class="mx-5">
         <v-col
           cols="12"
         >
-          <h2>受入切替画面 {{ user.host_name }}</h2>
-          <h2>データ{{ statusAcceptable() }}</h2>
-          <v-col
-            cols="4"
-          >
-            <span v-text="OK" />
-            <v-btn
-              color="success"
-              fab
-              x-large
-              dark
-            >
-              <v-icon
-                @click="possibleAcceptable()"
+          <h2 class="mt-5 mb-10">
+            <span class="main-title">受入切替画面</span>
+          </h2>
+          <h4 class="host-info">
+            店舗名：{{ user.host_name }}
+          </h4>
+          <h4 class="host-info">
+            現在の状態：
+            <span v-if="detail.acceptable === 1">
+              <v-btn
+                color="success"
+                dark
+                outlined
+                class="elevation-3 font-weight-bold"
               >
-                mdi-map-marker-radius
-              </v-icon>
-            </v-btn>
-          </v-col>
-          <v-col
-            cols="4"
-          >
-            <span v-text="NG" />
-            <v-btn
-              color="error"
-              fab
-              x-large
-              dark
-            >
-              <v-icon
-                @click="impossibleAcceptable()"
+                <span v-text="OK" />
+              </v-btn>
+            </span>
+            <span v-else>
+              <v-btn
+                color="error"
+                dark
+                outlined
+                class="elevation-3 font-weight-bold"
               >
-                mdi-map-marker-remove
-              </v-icon>
-            </v-btn>
-          </v-col>
+                <span v-text="NG" />
+              </v-btn>
+            </span>
+          </h4>
         </v-col>
+      </v-row>
+      <h4 class="switching mx-10">
+        切替ボタン
+      </h4>
+      <v-row
+        class="switch mx-5"
+      >
+        <v-btn
+          color="success"
+          x-large
+          dark
+          outlined
+          class="mx-auto elevation-3 font-weight-bold"
+          @click="possibleAcceptable()"
+        >
+          <span v-text="OK" />
+        </v-btn>
+        <v-divider vertical />
+        <v-btn
+          color="error"
+          x-large
+          dark
+          outlined
+          class="mx-auto elevation-3 font-weight-bold"
+          @click="impossibleAcceptable()"
+        >
+          <span v-text="NG" />
+        </v-btn>
       </v-row>
     </v-container>
   </v-app>
@@ -52,7 +73,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      OK: '受入可',
+      OK: '受入可能',
       NG: '受入不可',
       status_message: '',
       type: '',
@@ -74,13 +95,6 @@ export default {
         .then((res) => {
           this.detail = res.data
         })
-    },
-    statusAcceptable () {
-      if (this.detail.acceptable === 1) {
-        return '営業中'
-      } else {
-        return '満杯です'
-      }
     },
     possibleAcceptable () {
       this.detail.acceptable = 1
@@ -114,3 +128,29 @@ export default {
   }
 }
 </script>
+
+<style scope>
+  .main-title {
+    color: #444444;
+    padding-bottom: 5px;
+    border-bottom: solid;
+    border-color: #C0C0C0;
+    border-width: 2px;
+  }
+  .host-info {
+    color: #444444;
+    padding: 15px 0px;
+  }
+  .switching {
+    color: #444444;
+    margin: 30px 0 15px 0;
+  }
+  .switch {
+    border: solid;
+    border-color: #C0C0C0;
+    border-width: 2px;
+    border-radius: 10px;
+    height: 200px;
+    padding: 70px 0;
+  }
+</style>

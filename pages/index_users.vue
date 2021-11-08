@@ -117,7 +117,7 @@
                         text
                         @click="close()"
                       >
-                        Cancel
+                        キャンセル
                       </v-btn>
 
                       <v-btn
@@ -125,7 +125,7 @@
                         text
                         @click="save()"
                       >
-                        Save
+                        更新
                       </v-btn>
                     </v-card-actions>
                   </v-container>
@@ -143,10 +143,10 @@
                 <v-card-actions>
                   <v-spacer />
                   <v-btn color="blue darken-1" text @click="closeDelete">
-                    Cancel
+                    キャンセル
                   </v-btn>
                   <v-btn color="blue darken-1" text @click="deleteItemConfirm">
-                    OK
+                    削除
                   </v-btn>
                   <v-spacer />
                 </v-card-actions>
@@ -154,7 +154,7 @@
             </v-dialog>
           </v-card>
         </v-col>
-      </v-row>1
+      </v-row>
     </v-container>
   </v-main>
 </template>
@@ -299,5 +299,8 @@ export default {
 </script>
 
 <style scoped>
-
+  .pop-up {
+    padding: 20px;
+    height: 70px;
+  }
 </style>
