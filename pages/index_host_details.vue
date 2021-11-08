@@ -379,6 +379,7 @@ export default {
 
     newItem () {
       this.editedItem.tags = []
+      this.marker_icon_obj = ''
     },
 
     editItem (item) {
@@ -387,7 +388,6 @@ export default {
       if (this.editedItem.marker_icon) {
         this.marker_icon_obj_fake = this.marker_icons.filter(icon => icon.url === item.marker_icon)
         this.marker_icon_obj = this.marker_icon_obj_fake[0]
-        console.log(this.marker_icon_obj)
       }
       this.dialog = true
     },
