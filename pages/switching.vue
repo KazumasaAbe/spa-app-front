@@ -1,11 +1,11 @@
 <template>
-  <v-app id="app" class="switching">
+  <v-app id="app">
     <v-container>
-      <v-row>
+      <v-row class="mx-5">
         <v-col
           cols="12"
         >
-          <h2 class="my-5">
+          <h2 class="mt-5 mb-10">
             <span class="main-title">受入切替画面</span>
           </h2>
           <h4 class="host-info">
@@ -23,7 +23,7 @@
                 <span v-text="OK" />
               </v-btn>
             </span>
-            <span else>
+            <span v-else>
               <v-btn
                 color="error"
                 dark
@@ -36,38 +36,33 @@
           </h4>
         </v-col>
       </v-row>
+      <h4 class="switching mx-10">
+        切替ボタン
+      </h4>
       <v-row
-        justify="center"
-        aligin="center"
+        class="switch mx-5"
       >
-        <v-col
-          cols="5"
+        <v-btn
+          color="success"
+          x-large
+          dark
+          outlined
+          class="mx-auto elevation-3 font-weight-bold"
+          @click="possibleAcceptable()"
         >
-          <v-btn
-            color="success"
-            x-large
-            dark
-            outlined
-            class="elevation-3 font-weight-bold"
-            @click="possibleAcceptable()"
-          >
-            <span v-text="OK" />
-          </v-btn>
-        </v-col>
-        <v-col
-          cols="5"
+          <span v-text="OK" />
+        </v-btn>
+        <v-divider vertical />
+        <v-btn
+          color="error"
+          x-large
+          dark
+          outlined
+          class="mx-auto elevation-3 font-weight-bold"
+          @click="impossibleAcceptable()"
         >
-          <v-btn
-            color="error"
-            x-large
-            dark
-            outlined
-            class="elevation-3 font-weight-bold"
-            @click="impossibleAcceptable()"
-          >
-            <span v-text="NG" />
-          </v-btn>
-        </v-col>
+          <span v-text="NG" />
+        </v-btn>
       </v-row>
     </v-container>
   </v-app>
@@ -100,20 +95,6 @@ export default {
         .then((res) => {
           this.detail = res.data
         })
-    },
-    statusAcceptable () {
-      if (this.detail.acceptable === 1) {
-        return '営業中'
-      } else {
-        return '満杯'
-      }
-    },
-    gerColor () {
-      if (this.detail.acceptable === 1) {
-        return 'green'
-      } else {
-        return 'red'
-      }
     },
     possibleAcceptable () {
       this.detail.acceptable = 1
@@ -158,6 +139,18 @@ export default {
   }
   .host-info {
     color: #444444;
-    margin: 30px 0px;
+    padding: 15px 0px;
+  }
+  .switching {
+    color: #444444;
+    margin: 30px 0 15px 0;
+  }
+  .switch {
+    border: solid;
+    border-color: #C0C0C0;
+    border-width: 2px;
+    border-radius: 10px;
+    height: 200px;
+    padding: 70px 0;
   }
 </style>
