@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" class="switching">
+  <v-app id="app">
     <v-container>
       <h2 class="my-5">
         <span
