@@ -2,7 +2,7 @@
   <v-main>
     <v-container>
       <v-row justify="center" align-content="center" class="text-caption">
-        <v-col cols="10">
+        <v-col cols="12">
           <v-card>
             <v-tabs
               v-model="tab"

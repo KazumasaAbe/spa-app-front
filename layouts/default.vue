@@ -43,7 +43,7 @@
         <v-menu offset-y>
           <template #activator="{on}">
             <v-btn text v-on="on">
-              <v-icon>mdi-account-circle</v-icon>{{ user.email }}
+              <v-icon>mdi-account-circle</v-icon>
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>
           </template>

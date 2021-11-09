@@ -2,7 +2,11 @@
   <v-main>
     <v-container>
       <v-row justify="center" align-content="center" class="text-caption">
-        <v-col cols="10">
+        <v-col
+          cols="12"
+          md="10"
+          lg="10"
+        >
           <v-card>
             <v-card-title>
               店舗側新規登録
