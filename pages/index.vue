@@ -184,12 +184,11 @@
             </v-card-title>
             <v-card-text aligin-center>
               <v-col
-                cols="10"
-                offset="2"
+                cols="12"
               >
                 <v-img
-                  max-height="80%"
-                  max-width="80%"
+                  max-height="100%"
+                  max-width="100%"
                   :src="setImage()"
                 />
               </v-col>
